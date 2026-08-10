@@ -1,696 +1,689 @@
 <!DOCTYPE html>
-<html lang="id" class="light">
+<html lang="id" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NOTOATI, RESIKIATI</title>
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['Inter', 'sans-serif'] },
-                    colors: {
-                        brand: { 50: '#f0fdf4', 100: '#dcfce7', 500: '#22c55e', 600: '#16a34a', 900: '#14532d' }
-                    }
-                }
-            }
-        }
-    </script>
-
+    <title>Noto Ati Resiki Ati - Dakwah Damai & Membahagiakan</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; transition: background-color 0.3s, color 0.3s; }
-        .hidden-section { display: none; }
-        .active-section { display: block; animation: fadeIn 0.4s ease-in-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        :root {
+            --bg-color: #f4fdf8;
+            --text-color: #1e293b;
+            --primary-color: #059669; 
+            --primary-hover: #047857;
+            --card-bg: #ffffff;
+            --border-color: #e2e8f0;
+            --header-bg: #ffffff;
+            --muted-color: #64748b;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #0f172a;
+            --text-color: #f8fafc;
+            --primary-color: #10b981;
+            --primary-hover: #34d399;
+            --card-bg: #1e293b;
+            --border-color: #334155;
+            --header-bg: #1e293b;
+            --muted-color: #94a3b8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
+            line-height: 1.6;
+        }
+
+        .container { width: 90%; max-width: 1000px; margin: 0 auto; padding: 20px 0; }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background-color: var(--header-bg);
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .brand-logo {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-color);
+        }
+        .logo h1 { color: var(--primary-color); font-size: 1.3rem; font-weight: 700; }
+        .logo p { font-size: 0.8rem; color: var(--muted-color); }
         
-        /* Custom Radio Buttons */
-        .radio-label input[type="radio"]:checked + div {
-            background-color: #22c55e;
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .btn {
+            background: var(--primary-color);
             color: white;
-            border-color: #22c55e;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: 0.3s;
+            text-decoration: none;
+            display: inline-block;
         }
-        .dark .radio-label input[type="radio"]:checked + div {
-            background-color: #16a34a;
-            border-color: #16a34a;
+        .btn:hover { background: var(--primary-hover); }
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+        [data-theme="dark"] .btn-secondary { color: var(--primary-hover); border-color: var(--primary-hover); }
+        .btn-secondary:hover { background: var(--primary-color); color: white; }
+
+        /* Banner Kajian */
+        .banner {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+            color: white;
+            padding: 40px 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin: 30px 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .banner h2 { font-size: 1.8rem; margin-bottom: 10px; }
+        .banner p { font-size: 1rem; margin-bottom: 15px; opacity: 0.95; }
+
+        /* Jadwal Sholat */
+        .section-title { text-align: center; margin: 30px 0 15px 0; color: var(--primary-color); }
+        .prayer-table-container {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+        table { width: 100%; border-collapse: collapse; text-align: center; min-width: 450px; }
+        th, td { padding: 12px; border-bottom: 1px solid var(--border-color); }
+        th { background-color: rgba(5, 150, 105, 0.1); color: var(--primary-color); font-weight: 600; }
+        tr:last-child td { border-bottom: none; }
+
+        /* Bagian Berita */
+        .news-section {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin-bottom: 40px;
+            border: 1px solid var(--border-color);
+        }
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; justify-content: center; flex-wrap: wrap; }
+        .tab-btn {
+            padding: 8px 20px;
+            border: 1px solid var(--primary-color);
+            background: transparent;
+            color: var(--text-color);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 0.9rem;
+        }
+        .tab-btn.active, .tab-btn:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.4s; }
+        
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .news-card {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s;
+        }
+        .news-card:hover { transform: translateY(-3px); }
+        .news-img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            background-color: var(--border-color);
+        }
+        .news-body { padding: 15px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .news-body h4 { margin-bottom: 8px; color: var(--primary-color); font-size: 1.1rem; }
+        .news-body p { font-size: 0.9rem; color: var(--muted-color); margin-bottom: 12px; }
+        
+        .arabic-text { font-family: 'Amiri', serif; font-size: 1.4rem; text-align: right; direction: rtl; }
+
+        /* Modal / Dialog */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .modal.active { display: flex; }
+        .modal-content {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 600px;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        .close-modal {
+            position: absolute;
+            top: 15px; right: 20px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--muted-color);
+        }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: 500; font-size: 0.9rem; }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-color);
+            color: var(--text-color);
+            border-radius: 6px;
+            font-family: inherit;
+        }
+        .form-group textarea { resize: vertical; height: 100px; }
+
+        /* Admin List Table inside Modal */
+        .admin-table { width: 100%; margin-top: 15px; font-size: 0.85rem; }
+        .admin-table th, .admin-table td { padding: 8px; text-align: left; }
+
+        /* Donasi */
+        .donation-section { text-align: center; margin: 40px 0; padding: 35px; background: var(--card-bg); border-radius: 12px; border: 1px solid var(--border-color); }
+        .btn-donasi {
+            display: inline-block;
+            background-color: #f59e0b;
+            color: white;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            border: none;
+            transition: 0.3s;
+            box-shadow: 0 4px 6px rgba(245, 158, 11, 0.3);
+            margin-top: 10px;
+        }
+        .btn-donasi:hover { background-color: #d97706; transform: translateY(-2px); }
+
+        /* Toast Notification Container */
+        #toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .toast {
+            background: var(--card-bg);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            font-size: 0.9rem;
+            animation: slideIn 0.3s ease, fadeOut 0.3s ease 2.7s;
+            max-width: 320px;
         }
 
-        /* PDF Generation Styles */
-        .pdf-mode .no-print { display: none !important; }
-        .pdf-mode { padding: 20px !important; background: white !important; color: black !important; }
-        .pdf-mode .dark-bg { background: white !important; color: black !important; }
-
-        /* Floating WhatsApp Button Animation */
-        @keyframes pulse-wa {
-            0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
-            70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
-        }
-        .wa-float { animation: pulse-wa 2s infinite; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-200 min-h-screen flex flex-col relative">
+<body>
 
-    <nav class="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-50">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center cursor-pointer" onclick="navigate('home')">
-                    <img src="WhatsApp Image 2026-05-14 at 06.35.31.jpeg" alt="Notoati Logo" class="h-10 w-10 object-cover rounded-full mr-3 shadow-sm border border-gray-200 dark:border-gray-700">
-                    <span class="font-bold text-xl tracking-tight hidden sm:block" data-i18n="nav_home">NOTOATI</span>
-                </div>
-                <div class="flex items-center space-x-1 sm:space-x-3">
-                    <!-- Language Selector -->
-                    <select id="langToggle" class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 text-sm rounded-lg px-2 py-1 mr-2 border-none cursor-pointer focus:ring-2 focus:ring-brand-500">
-                        <option value="id">🇮🇩 ID</option>
-                        <option value="jv">ꦗ JV</option>
-                        <option value="en">🇬🇧 EN</option>
-                    </select>
-                    
-                    <button onclick="navigate('history')" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400" title="Riwayat">
-                        <i class="fas fa-chart-line"></i>
-                    </button>
-                    <button onclick="navigate('about')" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400" title="Tentang">
-                        <i class="fas fa-info-circle"></i>
-                    </button>
-                    <a href="https://wa.me/628551236277" target="_blank" class="p-2 rounded-lg hover:bg-green-50 dark:hover:bg-green-900/30 text-green-500" title="Hubungi Admin">
-                        <i class="fab fa-whatsapp text-lg"></i>
-                    </a>
-                    <button id="themeToggle" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400" title="Mode Gelap/Terang">
-                        <i class="fas fa-moon" id="themeIcon"></i>
-                    </button>
-                </div>
+    <header>
+        <div class="brand">
+            <img src="https://images.unsplash.com/photo-1591123120675-6f7f1aae028b?q=80&w=150&auto=format&fit=crop" alt="Logo Noto Ati" class="brand-logo" onerror="this.src='https://via.placeholder.com/55?text=Logo'">
+            <div class="logo">
+                <h1>Noto Ati Resiki Ati</h1>
+                <p>Dakwah Damai & Membahagiakan</p>
             </div>
         </div>
-    </nav>
+        <div class="header-actions">
+            <button class="btn btn-secondary" onclick="openAdminModal()">🔑 Dasbor Admin</button>
+            <button class="btn" onclick="toggleTheme()" id="theme-btn">🌙 Gelap</button>
+        </div>
+    </header>
 
-    <main class="flex-grow max-w-4xl mx-auto w-full px-4 py-8 sm:px-6 lg:px-8">
-
-        <!-- Notification Modal -->
-        <div id="notificationModal" class="fixed inset-0 bg-black bg-opacity-50 z-[60] hidden flex items-center justify-center backdrop-blur-sm">
-            <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 max-w-sm w-full mx-4 shadow-2xl text-center transform scale-95 transition-transform duration-300">
-                <i class="fas fa-exclamation-circle text-4xl text-yellow-500 mb-4"></i>
-                <h3 id="notificationTitle" class="text-lg font-bold mb-2">Peringatan</h3>
-                <p id="notificationMessage" class="text-gray-600 dark:text-gray-300 mb-6">Pesan</p>
-                <button onclick="closeNotification()" class="bg-brand-500 text-white px-6 py-2 rounded-lg font-medium hover:bg-brand-600 w-full transition">Tutup</button>
+    <div class="container">
+        
+        <!-- Banner Kajian Spesial dengan Poster Baru -->
+        <div class="banner" style="background: var(--card-bg); padding: 15px; border: 1px solid var(--border-color);">
+            <img src="https://images.unsplash.com/photo-1591123120675-6f7f1aae028b?q=80&w=1000&auto=format&fit=crop" 
+                 alt="Kajian Spesial: Jamannya Udah Digital Semua" 
+                 id="kajianPosterImg"
+                 style="width: 100%; max-height: 450px; object-fit: contain; border-radius: 8px; cursor: pointer;" 
+                 onclick="openDetailImage(this.src, 'Kajian Spesial: Jamannya Udah Digital Semua')"
+                 onerror="this.src='https://via.placeholder.com/800x450?text=Kajian+Spesial:+Jamannya+Udah+Digital+Semua'">
+            <div style="margin-top: 15px; text-align: center; color: var(--text-color);">
+                <h2 style="font-size: 1.5rem; color: var(--primary-color); margin-bottom: 5px;">Kajian Spesial: Jamannya Udah Digital Semua</h2>
+                <p style="font-size: 0.95rem; color: var(--muted-color);">Harus ikuti jika tidak ditelan jaman, tapi sholat jamaah tetap di masjid kecil biasa.</p>
+                <p style="font-size: 0.9rem; margin-top: 8px; font-weight: 600;">Bersama: Latif Safruddin (Founder PT. Webdigital Marketing)</p>
             </div>
         </div>
 
-        <section id="home" class="active-section">
-            <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-xl overflow-hidden">
-                <div class="bg-brand-500 p-8 sm:p-12 text-center text-white flex flex-col items-center">
-                    <img src="WhatsApp Image 2026-05-14 at 06.35.31.jpeg" alt="Notoati Logo" class="h-32 w-32 md:h-40 md:w-40 object-cover rounded-full mb-6 shadow-xl border-4 border-white/20">
-                    <h1 class="text-3xl sm:text-4xl font-extrabold mb-2" data-i18n="hero_title">NOTOATI, RESIKIATI</h1>
-                    <p class="text-brand-100 text-lg" data-i18n="hero_subtitle">Tes Refleksi Menata Hati & Membersihkan Hati</p>
-                </div>
-                <div class="p-8 sm:p-12 text-center">
-                    <p class="text-gray-600 dark:text-gray-300 mb-6 max-w-2xl mx-auto leading-relaxed" data-i18n="hero_desc">
-                        Aplikasi ini berfungsi sebagai alat bantu refleksi diri, bukan diagnosis psikologi medis. 
-                        Jawablah 20 pertanyaan berikut dengan jujur sesuai dengan apa yang paling menggambarkan diri Anda saat ini.
-                    </p>
-                    <div class="max-w-md mx-auto mb-8 text-left">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" data-i18n="label_name">Nama Anda</label>
-                        <input type="text" id="userName" placeholder="Masukkan nama panggilan..." class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition shadow-sm text-gray-900 dark:text-white" data-i18n-placeholder="placeholder_name">
-                    </div>
-                    <button onclick="startTest()" class="inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white bg-brand-500 hover:bg-brand-600 rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all">
-                        <span data-i18n="btn_start">Mulai Tes Sekarang</span> <i class="fas fa-arrow-right ml-2"></i>
-                    </button>
-                </div>
-            </div>
-        </section>
+        <!-- Jadwal Sholat -->
+        <h3 class="section-title">Jadwal Sholat Hari Ini</h3>
+        <div class="prayer-table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Subuh</th>
+                        <th>Dzuhur</th>
+                        <th>Ashar</th>
+                        <th>Maghrib</th>
+                        <th>Isya</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>04:30</td>
+                        <td>11:55</td>
+                        <td>15:15</td>
+                        <td>17:50</td>
+                        <td>19:05</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
-        <section id="test" class="hidden-section">
-            <div class="mb-6 flex justify-between items-end">
-                <div>
-                    <h2 class="text-2xl font-bold" data-i18n="test_title">Lembar Refleksi</h2>
-                    <p class="text-gray-500 dark:text-gray-400 text-sm mt-1" id="testUserNameDisplay"></p>
-                </div>
-                <div class="text-right">
-                    <span class="text-sm font-medium text-brand-500 bg-brand-50 dark:bg-gray-800 px-3 py-1 rounded-full" data-i18n="test_subtitle">20 Pertanyaan</span>
-                </div>
-            </div>
-
-            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 sm:p-8 mb-6">
-                <div class="mb-8 p-4 bg-blue-50 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 rounded-xl border border-blue-100 dark:border-blue-800 text-sm flex items-start">
-                    <i class="fas fa-info-circle mt-1 mr-3 text-lg"></i>
-                    <div id="test_hint_container">
-                        <strong data-i18n="hint_strong">Petunjuk:</strong> <span data-i18n="hint_text1">Pilih angka yang paling sesuai.</span><br>
-                        <span data-i18n="hint_text2">5 = Selalu, 4 = Sering, 3 = Kadang-kadang, 2 = Jarang, 1 = Tidak Pernah</span>
-                    </div>
-                </div>
-
-                <form id="testForm" class="space-y-10">
-                    <!-- Questions will be injected here via JS -->
-                    <div id="questionsContainer"></div>
-
-                    <div class="pt-6 border-t border-gray-200 dark:border-gray-700">
-                        <button type="button" onclick="submitTest()" class="w-full sm:w-auto px-8 py-4 bg-brand-500 hover:bg-brand-600 text-white font-bold rounded-xl shadow-md transition flex items-center justify-center mx-auto text-lg">
-                            <i class="fas fa-check-circle mr-2"></i> <span data-i18n="btn_finish">Selesai & Lihat Hasil</span>
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </section>
-
-        <section id="results" class="hidden-section">
-            <div class="flex flex-wrap gap-3 justify-end mb-6 no-print">
-                <button onclick="navigate('home')" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-lg font-medium transition text-sm">
-                    <i class="fas fa-redo mr-1"></i> <span data-i18n="res_retest">Tes Ulang</span>
-                </button>
-                <button onclick="exportPDF()" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium transition text-sm">
-                    <i class="fas fa-file-pdf mr-1"></i> <span data-i18n="res_pdf">Unduh PDF</span>
-                </button>
-                <button onclick="shareWhatsApp()" class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg font-medium transition text-sm">
-                    <i class="fab fa-whatsapp mr-1"></i> <span data-i18n="res_share">Bagikan</span>
-                </button>
+        <!-- CMS Berita 3 Bahasa -->
+        <h3 class="section-title">Artikel & Berita Dakwah</h3>
+        <div class="news-section">
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchLang('id')">🇮🇩 Indonesia</button>
+                <button class="tab-btn" onclick="switchLang('en')">🇬🇧 English</button>
+                <button class="tab-btn" onclick="switchLang('ar')">🇸🇦 العربية</button>
             </div>
 
-            <div id="pdf-content" class="bg-white dark:bg-gray-800 rounded-3xl shadow-xl overflow-hidden pdf-bg">
-                <div id="resultHeader" class="p-8 sm:p-10 text-center text-white transition-colors duration-500">
-                    <p class="text-sm font-medium uppercase tracking-wider mb-2 opacity-80" data-i18n="res_score_title">Skor Total Refleksi</p>
-                    <div class="text-6xl sm:text-7xl font-extrabold mb-2" id="scoreDisplay">0</div>
-                    <div class="text-xl sm:text-2xl font-bold bg-white bg-opacity-20 inline-block px-6 py-2 rounded-full" id="categoryDisplay">Kategori</div>
-                </div>
-
-                <div class="p-6 sm:p-10">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
-                        <!-- User Info -->
-                        <div class="bg-gray-50 dark:bg-gray-700 p-6 rounded-2xl">
-                            <h3 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4" data-i18n="res_summary">Ringkasan Profil</h3>
-                            <div class="space-y-3">
-                                <p class="flex justify-between border-b border-gray-200 dark:border-gray-600 pb-2">
-                                    <span class="text-gray-600 dark:text-gray-300" data-i18n="res_name_label">Nama</span>
-                                    <span class="font-bold" id="resName">-</span>
-                                </p>
-                                <p class="flex justify-between border-b border-gray-200 dark:border-gray-600 pb-2">
-                                    <span class="text-gray-600 dark:text-gray-300" data-i18n="res_date_label">Tanggal</span>
-                                    <span class="font-bold" id="resDate">-</span>
-                                </p>
-                                <p class="flex justify-between pb-2">
-                                    <span class="text-gray-600 dark:text-gray-300" data-i18n="res_percent_label">Persentase</span>
-                                    <span class="font-bold" id="resPercent">-</span>
-                                </p>
-                            </div>
-                        </div>
-
-                        <!-- Feedback Message -->
-                        <div class="bg-gray-50 dark:bg-gray-700 p-6 rounded-2xl flex flex-col justify-center">
-                            <h3 class="text-lg font-bold mb-2" data-i18n="res_interp">Interpretasi:</h3>
-                            <p id="feedbackMessage" class="text-gray-700 dark:text-gray-300 leading-relaxed italic">
-                                Feedback.
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- Charts Section -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
-                        <div class="bg-white dark:bg-gray-800 p-4 border border-gray-100 dark:border-gray-700 rounded-2xl shadow-sm text-center">
-                            <h3 class="font-bold text-gray-700 dark:text-gray-200 mb-4" data-i18n="res_chart1">Grafik Skor Total</h3>
-                            <div class="relative w-full h-48 flex justify-center">
-                                <canvas id="doughnutChart"></canvas>
-                            </div>
-                        </div>
-                        <div class="bg-white dark:bg-gray-800 p-4 border border-gray-100 dark:border-gray-700 rounded-2xl shadow-sm text-center">
-                            <h3 class="font-bold text-gray-700 dark:text-gray-200 mb-4" data-i18n="res_chart2">Keseimbangan Hati (Radar)</h3>
-                            <div class="relative w-full h-48 flex justify-center">
-                                <canvas id="radarChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Advice Section -->
-                    <div class="bg-brand-50 dark:bg-gray-700 border-l-4 border-brand-500 p-6 rounded-r-xl">
-                        <h3 class="text-xl font-bold mb-4 flex items-center text-gray-800 dark:text-white">
-                            <i class="fas fa-lightbulb text-yellow-500 mr-2"></i> <span data-i18n="res_advice_title">Saran & Rekomendasi</span>
-                        </h3>
-                        <ul id="adviceList" class="space-y-3">
-                            <!-- Advice items injected here -->
-                        </ul>
-                    </div>
-
-                </div>
+            <div id="content-id" class="tab-content active">
+                <div class="news-grid" id="grid-id"></div>
             </div>
-        </section>
-
-        <section id="history" class="hidden-section">
-            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 sm:p-8">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-2xl font-bold" data-i18n="hist_title">Riwayat Tes</h2>
-                    <button onclick="clearHistory()" class="text-red-500 hover:text-red-700 text-sm font-medium">
-                        <i class="fas fa-trash-alt mr-1"></i> <span data-i18n="hist_btn_clear">Hapus Riwayat</span>
-                    </button>
-                </div>
-                <p class="text-gray-600 dark:text-gray-400 mb-6 text-sm" data-i18n="hist_desc">
-                    Grafik ini menunjukkan perkembangan kondisi hati Anda berdasarkan tes yang telah dilakukan di perangkat ini.
-                </p>
-                <div class="relative w-full h-64 sm:h-80">
-                    <canvas id="historyChart"></canvas>
-                </div>
+            <div id="content-en" class="tab-content">
+                <div class="news-grid" id="grid-en"></div>
             </div>
-        </section>
-
-        <section id="about" class="hidden-section">
-            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 sm:p-10 text-center">
-                <img src="WhatsApp Image 2026-05-14 at 06.35.31.jpeg" alt="Notoati Logo" class="h-24 w-24 object-cover rounded-full mx-auto mb-6 shadow-lg">
-                <h2 class="text-3xl font-bold mb-4" data-i18n="about_title">Tentang Notoati Resikiati</h2>
-                <div class="text-gray-600 dark:text-gray-300 space-y-4 max-w-2xl mx-auto text-left leading-relaxed">
-                    <p data-i18n="about_desc1">
-                        Aplikasi <strong>NOTOATI, RESIKIATI</strong> (Menata Hati, Membersihkan Hati) adalah instrumen refleksi diri mandiri yang dirancang berdasarkan nilai-nilai spiritual dan moral.
-                    </p>
-                    <p data-i18n="about_desc2">
-                        Tujuan utama aplikasi ini adalah untuk memfasilitasi <em>muhasabah</em> (introspeksi) harian terkait bagaimana kita mengelola niat, emosi, dan hubungan baik dengan Sang Pencipta maupun dengan sesama manusia.
-                    </p>
-                    <div class="bg-yellow-50 dark:bg-yellow-900/30 border-l-4 border-yellow-500 p-4 rounded-r mt-6">
-                        <strong data-i18n="about_warning_strong">Perhatian:</strong> <span data-i18n="about_warning">Aplikasi ini bukan alat ukur psikologi klinis atau medis. Skor dan saran yang diberikan sepenuhnya bersifat referensi untuk perbaikan diri (self-improvement).</span>
-                    </div>
-                    <p class="text-sm mt-8 text-center text-gray-400" data-i18n="footer_text">
-                        Versi 1.1.0 &copy; 2026. Perbanyak Muhasabah.
-                    </p>
-                </div>
+            <div id="content-ar" class="tab-content">
+                <div class="news-grid" id="grid-ar"></div>
             </div>
-        </section>
+        </div>
 
-    </main>
+        <!-- Tombol Infaq/Donasi -->
+        <div class="donation-section">
+            <h3 style="margin-bottom: 10px;">Salurkan Infaq & Sedekah Terbaik Anda</h3>
+            <p style="margin-bottom: 15px; color: var(--muted-color); font-size: 0.95rem;">Bantu kami menyebarkan dakwah yang menyejukkan hati ke seluruh penjuru.</p>
+            <button class="btn-donasi" onclick="showDonationInfo()">Peluang Pahala Jariyah (Donasi)</button>
+        </div>
 
-    <!-- Floating WhatsApp Button -->
-    <a href="https://wa.me/628551236277" target="_blank" class="wa-float fixed bottom-6 right-6 bg-[#25D366] text-white w-14 h-14 rounded-full flex items-center justify-center text-3xl shadow-lg hover:bg-[#128C7E] transition-colors z-50 no-print" title="Hubungi Admin">
-        <i class="fab fa-whatsapp"></i>
-    </a>
+    </div>
+
+    <!-- MODAL DASBOR ADMIN -->
+    <div class="modal" id="adminModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeAdminModal()">&times;</span>
+            <h3 style="margin-bottom: 15px; color: var(--primary-color);">Dasbor Admin - Terbitkan Berita</h3>
+            
+            <form id="newsForm" onsubmit="handleSaveNews(event)">
+                <input type="hidden" id="editIndex" value="">
+                <div class="form-group">
+                    <label>Judul Berita (Indonesia)</label>
+                    <input type="text" id="titleId" required placeholder="Contoh: Menjaga Lisan, Menjaga Hati">
+                </div>
+                <div class="form-group">
+                    <label>Isi Berita Lengkap (Indonesia)</label>
+                    <textarea id="contentId" required placeholder="Tulis isi berita selengkapnya di sini..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Unggah Foto dari Perangkat</label>
+                    <input type="file" id="imageFile" accept="image/*" onchange="previewFileImage(event)" style="padding: 6px;">
+                    <small style="color: var(--muted-color); display: block; margin-top: 4px;">Atau masukkan URL gambar di bawah ini:</small>
+                </div>
+                <div class="form-group">
+                    <label>URL Gambar (Opsional jika sudah unggah foto)</label>
+                    <input type="url" id="imageUrl" placeholder="https://images.unsplash.com/... atau biarkan kosong">
+                </div>
+                
+                <div style="display: flex; gap: 10px;">
+                    <button type="submit" class="btn" id="submitBtn">Terbitkan Berita</button>
+                    <button type="button" class="btn btn-secondary" onclick="resetForm()" style="display:none;" id="cancelEditBtn">Batal Edit</button>
+                </div>
+            </form>
+
+            <hr style="margin: 25px 0; border: 0; border-top: 1px solid var(--border-color);">
+            
+            <h4 style="margin-bottom: 10px; font-size: 1rem;">Kelola Berita Terbit</h4>
+            <div style="overflow-x: auto;">
+                <table class="admin-table" id="adminTable">
+                    <thead>
+                        <tr>
+                            <th>Judul</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL BACA SELENGKAPNYA -->
+    <div class="modal" id="detailModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeDetailModal()">&times;</span>
+            <img id="detailImg" src="" alt="" style="width:100%; max-height:350px; object-fit:contain; border-radius:8px; margin-bottom:15px; background: #000;">
+            <h2 id="detailTitle" style="color: var(--primary-color); margin-bottom: 15px; font-size: 1.5rem;"></h2>
+            <div id="detailText" style="white-space: pre-line; font-size: 0.95rem; color: var(--text-color);"></div>
+        </div>
+    </div>
+
+    <!-- MODAL DONASI / INFO -->
+    <div class="modal" id="donationModal">
+        <div class="modal-content" style="text-align: center;">
+            <span class="close-modal" onclick="closeDonationModal()">&times;</span>
+            <h3 style="color: var(--primary-color); margin-bottom: 15px;">Salurkan Infaq & Sedekah</h3>
+            <p style="margin-bottom: 20px; color: var(--muted-color);">Terima kasih atas niat baik Anda. Silakan transfer melalui rekening resmi yayasan di bawah ini:</p>
+            <div style="background: var(--bg-color); padding: 15px; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 20px;">
+                <p style="font-weight: 700; font-size: 1.2rem; color: var(--primary-color); margin-bottom: 5px;">BSI: 1234567890</p>
+                <p style="font-size: 0.9rem;">a.n. Yayasan Noto Ati Resiki Ati</p>
+            </div>
+            <button class="btn" onclick="copyRekening('1234567890')">Salin Nomor Rekening</button>
+        </div>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div id="toast-container"></div>
 
     <script>
-        // Data & Translations
-        let currentLang = 'id';
-
-        const i18n = {
-            id: {
-                nav_home: "NOTOATI", hero_title: "NOTOATI, RESIKIATI", hero_subtitle: "Tes Refleksi Menata Hati & Membersihkan Hati",
-                hero_desc: "Aplikasi ini berfungsi sebagai alat bantu refleksi diri, bukan diagnosis psikologi medis. Jawablah 20 pertanyaan berikut dengan jujur sesuai dengan apa yang paling menggambarkan diri Anda saat ini.",
-                label_name: "Nama Anda", placeholder_name: "Masukkan nama panggilan...", btn_start: "Mulai Tes Sekarang",
-                test_title: "Lembar Refleksi", test_subtitle: "20 Pertanyaan", hint_strong: "Petunjuk:", 
-                hint_text1: "Pilih angka yang paling sesuai.", hint_text2: "5 = Selalu, 4 = Sering, 3 = Kadang-kadang, 2 = Jarang, 1 = Tidak Pernah",
-                btn_finish: "Selesai & Lihat Hasil", res_retest: "Tes Ulang", res_pdf: "Unduh PDF", res_share: "Bagikan",
-                res_score_title: "Skor Total Refleksi", res_summary: "Ringkasan Profil", res_name_label: "Nama",
-                res_date_label: "Tanggal", res_percent_label: "Persentase", res_interp: "Interpretasi:",
-                res_chart1: "Grafik Skor Total", res_chart2: "Keseimbangan Hati (Radar)", res_advice_title: "Saran & Rekomendasi",
-                hist_title: "Riwayat Tes", hist_btn_clear: "Hapus Riwayat", hist_desc: "Grafik ini menunjukkan perkembangan kondisi hati Anda berdasarkan tes yang telah dilakukan di perangkat ini.",
-                about_title: "Tentang Notoati Resikiati", about_desc1: "Aplikasi <strong>NOTOATI, RESIKIATI</strong> (Menata Hati, Membersihkan Hati) adalah instrumen refleksi diri mandiri yang dirancang berdasarkan nilai-nilai spiritual dan moral.",
-                about_desc2: "Tujuan utama aplikasi ini adalah untuk memfasilitasi <em>muhasabah</em> (introspeksi) harian terkait bagaimana kita mengelola niat, emosi, dan hubungan baik dengan Sang Pencipta maupun dengan sesama manusia.",
-                about_warning_strong: "Perhatian:", about_warning: "Aplikasi ini bukan alat ukur psikologi klinis atau medis. Skor dan saran yang diberikan sepenuhnya bersifat referensi untuk perbaikan diri (self-improvement).",
-                footer_text: "Versi 1.1.0 &copy; 2026. Perbanyak Muhasabah.",
-                q_catA: "A. Menata Hati", q_catB: "B. Membersihkan Hati",
-                ans_never: "Tidak Pernah", ans_always: "Selalu",
-                chart_yours: "Skor Anda", chart_left: "Kekurangan", chart_empty: "Belum ada riwayat tes."
+        // Data Berita Awal (Default)
+        let newsList = JSON.parse(localStorage.getItem('noto_news')) || [
+            {
+                title: "Menjaga Lisan, Menjaga Hati",
+                content: "Islam mengajarkan kita untuk selalu berkata yang baik atau diam. Kedamaian dimulai dari kata-kata yang menyejukkan hati sesama manusia. Dengan lisan yang terjaga, kita dapat menghindari perpecahan dan merangkul ukhuwah Islamiyah secara utuh dan membahagiakan.",
+                image: "https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?q=80&w=600&auto=format&fit=crop"
             },
-            en: {
-                nav_home: "NOTOATI", hero_title: "HEART MANAGEMENT", hero_subtitle: "Heart Management & Purification Reflection Test",
-                hero_desc: "This application serves as a self-reflection tool, not a medical psychological diagnosis. Answer the following 20 questions honestly according to what best describes you right now.",
-                label_name: "Your Name", placeholder_name: "Enter your nickname...", btn_start: "Start Test Now",
-                test_title: "Reflection Sheet", test_subtitle: "20 Questions", hint_strong: "Hint:", 
-                hint_text1: "Choose the most appropriate number.", hint_text2: "5 = Always, 4 = Often, 3 = Sometimes, 2 = Rarely, 1 = Never",
-                btn_finish: "Finish & See Results", res_retest: "Retest", res_pdf: "Download PDF", res_share: "Share",
-                res_score_title: "Total Reflection Score", res_summary: "Profile Summary", res_name_label: "Name",
-                res_date_label: "Date", res_percent_label: "Percentage", res_interp: "Interpretation:",
-                res_chart1: "Total Score Chart", res_chart2: "Heart Balance (Radar)", res_advice_title: "Advice & Recommendations",
-                hist_title: "Test History", hist_btn_clear: "Clear History", hist_desc: "This chart shows the progression of your heart's condition based on tests taken on this device.",
-                about_title: "About Notoati Resikiati", about_desc1: "The <strong>NOTOATI, RESIKIATI</strong> (Heart Management & Purification) app is an independent self-reflection instrument designed based on spiritual and moral values.",
-                about_desc2: "The main purpose of this application is to facilitate daily <em>muhasabah</em> (introspection) regarding how we manage our intentions, emotions, and relationships with the Creator and fellow humans.",
-                about_warning_strong: "Attention:", about_warning: "This application is not a clinical or medical psychological measurement tool. The scores and advice provided are purely references for spiritual self-improvement.",
-                footer_text: "Version 1.1.0 &copy; 2026. Increase Introspection.",
-                q_catA: "A. Heart Management", q_catB: "B. Heart Purification",
-                ans_never: "Never", ans_always: "Always",
-                chart_yours: "Your Score", chart_left: "Remaining", chart_empty: "No test history yet."
-            },
-            jv: {
-                nav_home: "NOTO ATI", hero_title: "NOTO ATI, RESIKI ATI", hero_subtitle: "Tes Refleksi Nata Ati lan Ngresiki Ati",
-                hero_desc: "Aplikasi iki minangka piranti kanggo refleksi diri, dudu diagnosis psikologis medis. Wangsulana 20 pitakonan ing ngisor iki kanthi jujur ​​miturut kahanan sampeyan saiki.",
-                label_name: "Asma Panjenengan", placeholder_name: "Lebokake asma...", btn_start: "Wiwit Tes Saiki",
-                test_title: "Lembar Refleksi", test_subtitle: "20 Pitakonan", hint_strong: "Pituduh:", 
-                hint_text1: "Pilih angka sing paling pas.", hint_text2: "5 = Tansah, 4 = Kerep, 3 = Kadhangkala, 2 = Arang, 1 = Ora Tau",
-                btn_finish: "Rampung & Deleng Hasil", res_retest: "Tes Baleni", res_pdf: "Unduh PDF", res_share: "Bagikan",
-                res_score_title: "Skor Total Refleksi", res_summary: "Ringkesan Profil", res_name_label: "Asma",
-                res_date_label: "Tanggal", res_percent_label: "Persentase", res_interp: "Interpretasi:",
-                res_chart1: "Grafik Skor Total", res_chart2: "Keseimbangan Ati (Radar)", res_advice_title: "Saran & Pituduh",
-                hist_title: "Riwayat Tes", hist_btn_clear: "Busak Riwayat", hist_desc: "Grafik iki nuduhake perkembangan kahanan ati panjenengan adhedhasar tes sing wis dilakoni ing piranti iki.",
-                about_title: "Babagan Notoati Resikiati", about_desc1: "Aplikasi <strong>NOTO ATI, RESIKI ATI</strong> iku instrumen refleksi diri mandiri sing dirancang adhedhasar nilai-nilai spiritual lan moral.",
-                about_desc2: "Tujuan utama aplikasi iki yaiku kanggo nggampangake <em>muhasabah</em> (introspeksi) saben dina babagan carane kita ngatur niat, emosi, lan hubungan karo Gusti lan pepadha manungsa.",
-                about_warning_strong: "Perhatian:", about_warning: "Aplikasi iki dudu alat ukur psikologi klinis utawa medis. Skor lan saran sing diwenehake mung minangka referensi kanggo ndandani dhiri (self-improvement).",
-                footer_text: "Versi 1.1.0 &copy; 2026. Kathahi Muhasabah.",
-                q_catA: "A. Nata Ati", q_catB: "B. Ngresiki Ati",
-                ans_never: "Ora Tau", ans_always: "Tansah",
-                chart_yours: "Skor Panjenengan", chart_left: "Kekurangan", chart_empty: "Dereng wonten riwayat tes."
+            {
+                title: "Indahnya Silaturahmi Membawa Berkah",
+                content: "Silaturahmi bukan sekadar memperpanjang umur, tetapi juga melapangkan rezeki dan membawa kedamaian batin bagi yang menjalankannya. Mari kita eratkan tali persaudaraan dengan senyuman dan kebaikan.",
+                image: "https://images.unsplash.com/photo-1591123120675-6f7f1aae028b?q=80&w=600&auto=format&fit=crop"
             }
-        };
-
-        const questionsData = [
-            { id: 'q1', category: 'A', text: { id: "Saya memulai hari dengan niat yang baik.", en: "I start my day with good intentions.", jv: "Kula miwiti dinten kanthi niat ingkang sae." } },
-            { id: 'q2', category: 'A', text: { id: "Saya berusaha ikhlas ketika membantu orang lain.", en: "I try to be sincere when helping others.", jv: "Kula ngupayakake ikhlas nalika nulungi tiyang sanes." } },
-            { id: 'q3', category: 'A', text: { id: "Saya mudah memaafkan kesalahan orang lain.", en: "I easily forgive the mistakes of others.", jv: "Kula gampil ngapunten kalepatanipun tiyang sanes." } },
-            { id: 'q4', category: 'A', text: { id: "Saya tidak mudah iri terhadap keberhasilan orang lain.", en: "I do not easily envy the success of others.", jv: "Kula mboten gampil meri dhateng kejayaanipun tiyang sanes." } },
-            { id: 'q5', category: 'A', text: { id: "Saya menjaga lisan agar tidak menyakiti.", en: "I guard my words so as not to hurt others.", jv: "Kula njagi lisan supados mboten nglarani ati." } },
-            { id: 'q6', category: 'A', text: { id: "Saya bersyukur atas nikmat yang dimiliki.", en: "I am grateful for the blessings I have.", jv: "Kula tansah ngucap syukur dhumateng nikmat ingkang wonten." } },
-            { id: 'q7', category: 'A', text: { id: "Saya mampu mengendalikan emosi ketika marah.", en: "I am able to control my emotions when angry.", jv: "Kula saged ngempet emosi nalika nembe duka." } },
-            { id: 'q8', category: 'A', text: { id: "Saya menerima kritik dengan lapang dada.", en: "I accept criticism with an open heart.", jv: "Kula nampi panyaruwe (kritik) kanthi lila legawa." } },
-            { id: 'q9', category: 'A', text: { id: "Saya tidak suka membicarakan keburukan orang lain.", en: "I do not like talking about the flaws of others.", jv: "Kula mboten remen ngomongake awone tiyang sanes." } },
-            { id: 'q10', category: 'A', text: { id: "Saya selalu introspeksi setelah melakukan kesalahan.", en: "I always introspect after making a mistake.", jv: "Kula tansah mawas diri sakwise nindakake kalepatan." } },
-            
-            { id: 'q11', category: 'B', text: { id: "Saya rutin berdoa memohon hati yang bersih.", en: "I regularly pray for a pure heart.", jv: "Kula rutin ndonga nyuwun manah ingkang resik." } },
-            { id: 'q12', category: 'B', text: { id: "Saya membaca Al-Qur'an secara rutin.", en: "I read the holy book/scriptures regularly.", jv: "Kula maos kitab suci/Al-Qur'an kanthi rutin." } },
-            { id: 'q13', category: 'B', text: { id: "Saya menjaga ibadah/shalat tepat waktu.", en: "I pray on time.", jv: "Kula njagi ibadah/shalat tepat wektu." } },
-            { id: 'q14', category: 'B', text: { id: "Saya berusaha menjauhi sifat sombong.", en: "I try to avoid arrogance.", jv: "Kula ngupayakake tebih saking sipat gumedhe (sombong)." } },
-            { id: 'q15', category: 'B', text: { id: "Saya tidak menyimpan dendam.", en: "I do not hold grudges.", jv: "Kula mboten nyimpen rasa dendam." } },
-            { id: 'q16', category: 'B', text: { id: "Saya mudah meminta maaf ketika bersalah.", en: "I easily apologize when I am wrong.", jv: "Kula gampil nyuwun pangapunten menawi lepat." } },
-            { id: 'q17', category: 'B', text: { id: "Saya senang melihat orang lain bahagia.", en: "I am happy to see others happy.", jv: "Kula remen ningali tiyang sanes seneng." } },
-            { id: 'q18', category: 'B', text: { id: "Saya lebih mengutamakan kehidupan abadi (akhirat) daripada pujian manusia.", en: "I prioritize the afterlife over human praise.", jv: "Kula langkung ngutamakake akhirat tinimbang pamuji manungsa." } },
-            { id: 'q19', category: 'B', text: { id: "Saya berusaha menjaga hati dari pamrih (riya).", en: "I try to protect my heart from showing off (riya).", jv: "Kula ngupayakake njagi manah saking riya'." } },
-            { id: 'q20', category: 'B', text: { id: "Saya selalu memperbaiki diri setiap hari.", en: "I always improve myself every day.", jv: "Kula tansah ndandani dhiri saben dinten." } }
         ];
 
-        let doughnutChartInstance = null;
-        let radarChartInstance = null;
-        let historyChartInstance = null;
-        let currentUser = { name: "Hamba Allah", date: "", score: 0, category: "", currentResultObj: null };
+        let uploadedBase64Image = "";
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const themeToggleBtn = document.getElementById('themeToggle');
-            const htmlElement = document.documentElement;
-            const themeIcon = document.getElementById('themeIcon');
-            const langSelect = document.getElementById('langToggle');
-
-            // Theme setup
-            if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                htmlElement.classList.add('dark');
-                themeIcon.classList.replace('fa-moon', 'fa-sun');
+        function previewFileImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    uploadedBase64Image = e.target.result;
+                    document.getElementById('imageUrl').value = ""; // Kosongkan input URL jika upload file
+                    showToast("Foto berhasil dimuat dari perangkat!");
+                };
+                reader.readAsDataURL(file);
             }
+        }
 
-            themeToggleBtn.addEventListener('click', () => {
-                htmlElement.classList.toggle('dark');
-                localStorage.setItem('theme', htmlElement.classList.contains('dark') ? 'dark' : 'light');
-                themeIcon.classList.replace(htmlElement.classList.contains('dark') ? 'fa-moon' : 'fa-sun', htmlElement.classList.contains('dark') ? 'fa-sun' : 'fa-moon');
-                updateChartsTheme();
-            });
+        // Sistem Notifikasi Non-Blocking (Toast)
+        function showToast(message) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerText = message;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
 
-            // Language setup
-            if(localStorage.getItem('lang')) {
-                currentLang = localStorage.getItem('lang');
-                langSelect.value = currentLang;
+        // Fungsi Tema Gelap / Terang
+        function toggleTheme() {
+            const html = document.documentElement;
+            const themeBtn = document.getElementById('theme-btn');
+            if (html.getAttribute('data-theme') === 'light') {
+                html.setAttribute('data-theme', 'dark');
+                themeBtn.innerText = '☀️ Terang';
+            } else {
+                html.setAttribute('data-theme', 'light');
+                themeBtn.innerText = '🌙 Gelap';
             }
-            applyLanguage();
-
-            langSelect.addEventListener('change', (e) => {
-                currentLang = e.target.value;
-                localStorage.setItem('lang', currentLang);
-                applyLanguage();
-                renderQuestionsUI(); // Re-render questions if language changes
-                if(document.getElementById('results').classList.contains('active-section') && currentUser.currentResultObj) {
-                    const catData = getCategoryData(currentUser.currentResultObj.score);
-                    renderResultsPage(currentUser.currentResultObj, catData); // Re-render results in new lang
-                }
-                if(document.getElementById('history').classList.contains('active-section')){
-                    renderHistoryChart();
-                }
-            });
-
-            // Set Date
-            const today = new Date();
-            currentUser.date = today.toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });
-            renderQuestionsUI();
-        });
-
-        function applyLanguage() {
-            const texts = i18n[currentLang];
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if(texts[key]) el.innerHTML = texts[key];
-            });
-            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-                const key = el.getAttribute('data-i18n-placeholder');
-                if(texts[key]) el.setAttribute('placeholder', texts[key]);
-            });
         }
 
-        function navigate(sectionId) {
-            document.querySelectorAll('main > section').forEach(sec => {
-                sec.classList.remove('active-section');
-                sec.classList.add('hidden-section');
-            });
-            const target = document.getElementById(sectionId);
-            target.classList.remove('hidden-section');
-            target.classList.add('active-section');
-            window.scrollTo(0, 0);
+        // Render Berita ke Halaman Utama
+        function renderNews() {
+            const gridId = document.getElementById('grid-id');
+            const gridEn = document.getElementById('grid-en');
+            const gridAr = document.getElementById('grid-ar');
 
-            if (sectionId === 'history') renderHistoryChart();
-        }
+            gridId.innerHTML = '';
+            gridEn.innerHTML = '';
+            gridAr.innerHTML = '';
 
-        function showNotification(title, message) {
-            document.getElementById('notificationTitle').innerText = title;
-            document.getElementById('notificationMessage').innerText = message;
-            document.getElementById('notificationModal').classList.remove('hidden');
-        }
-
-        function closeNotification() { document.getElementById('notificationModal').classList.add('hidden'); }
-
-        function startTest() {
-            const nameInput = document.getElementById('userName').value.trim();
-            currentUser.name = nameInput ? nameInput : (currentLang==='en' ? "Guest" : "Hamba Allah");
-            
-            const respondentText = currentLang === 'en' ? "Respondent: " : (currentLang === 'jv' ? "Responden: " : "Responden: ");
-            document.getElementById('testUserNameDisplay').innerText = `${respondentText} ${currentUser.name}`;
-            
-            document.getElementById('testForm').reset();
-            navigate('test');
-        }
-
-        function renderQuestionsUI() {
-            const container = document.getElementById('questionsContainer');
-            const catA = questionsData.filter(q => q.category === 'A');
-            const catB = questionsData.filter(q => q.category === 'B');
-            
-            container.innerHTML = renderQuestionGroup(i18n[currentLang].q_catA, catA) + 
-                                  renderQuestionGroup(i18n[currentLang].q_catB, catB);
-        }
-
-        function renderQuestionGroup(title, questions) {
-            let html = `<div class="mb-10"><h3 class="text-xl font-bold mb-6 text-brand-600 dark:text-brand-400 border-b pb-2 border-gray-200 dark:border-gray-700">${title}</h3><div class="space-y-8">`;
-            
-            questions.forEach(q => {
-                html += `
-                <div class="bg-gray-50 dark:bg-gray-700/50 p-5 rounded-xl border border-gray-100 dark:border-gray-600 hover:shadow-md transition">
-                    <p class="font-medium text-lg mb-4 text-gray-800 dark:text-gray-200">${q.id.replace('q','')}. ${q.text[currentLang]}</p>
-                    <div class="grid grid-cols-5 gap-2 sm:gap-4 text-center">
-                        ${[1, 2, 3, 4, 5].map(val => `
-                            <label class="radio-label cursor-pointer relative">
-                                <input type="radio" name="${q.id}" value="${val}" class="peer sr-only">
-                                <div class="w-full py-3 rounded-lg border-2 border-gray-200 dark:border-gray-600 text-gray-500 dark:text-gray-400 font-bold transition-all hover:border-brand-300 dark:hover:border-brand-700 bg-white dark:bg-gray-800">
-                                    ${val}
-                                </div>
-                                ${val === 1 ? `<span class="absolute -bottom-6 text-xs text-gray-400 left-0 w-full text-center hidden sm:block">${i18n[currentLang].ans_never}</span>` : ''}
-                                ${val === 5 ? `<span class="absolute -bottom-6 text-xs text-gray-400 left-0 w-full text-center hidden sm:block">${i18n[currentLang].ans_always}</span>` : ''}
-                            </label>
-                        `).join('')}
+            newsList.forEach((item, index) => {
+                // Versi Indonesia
+                gridId.innerHTML += createCardHtml(item.title, item.content, item.image, index);
+                
+                // Versi Inggris (Otomatis placeholder terjemahan)
+                gridEn.innerHTML += createCardHtml("English: " + item.title, "English translation: " + item.content, item.image, index);
+                
+                // Versi Arab (Otomatis placeholder terjemahan dengan arah kanan-ke-kiri)
+                gridAr.innerHTML += `
+                    <div class="news-card">
+                        <img src="${item.image}" class="news-img" onerror="this.src='https://via.placeholder.com/300x160?text=Gambar+Tidak+Tersedia'">
+                        <div class="news-body">
+                            <div>
+                                <h4 class="arabic-text">العربية: ${item.title}</h4>
+                                <p class="arabic-text">${item.content}</p>
+                            </div>
+                            <button class="btn btn-secondary" style="margin-top:10px; width:100%;" onclick="openDetail(${index})">اقرأ المزيد</button>
+                        </div>
                     </div>
-                </div>`;
+                `;
             });
-            html += `</div></div>`;
-            return html;
+
+            renderAdminTable();
         }
 
-        function submitTest() {
-            const formData = new FormData(document.getElementById('testForm'));
-            let totalScore = 0, scoreA = 0, scoreB = 0, answered = 0;
+        function createCardHtml(title, content, image, index) {
+            const shortContent = content.length > 90 ? content.substring(0, 90) + '...' : content;
+            return `
+                <div class="news-card">
+                    <img src="${image}" class="news-img" onerror="this.src='https://via.placeholder.com/300x160?text=Gambar+Gagal+Dimuat'">
+                    <div class="news-body">
+                        <div>
+                            <h4>${title}</h4>
+                            <p>${shortContent}</p>
+                        </div>
+                        <button class="btn" style="width:100%; margin-top:10px;" onclick="openDetail(${index})">Baca Selengkapnya</button>
+                    </div>
+                </div>
+            `;
+        }
 
-            for (const q of questionsData) {
-                const val = formData.get(q.id);
-                if (val) {
-                    answered++;
-                    totalScore += parseInt(val);
-                    if (q.category === 'A') scoreA += parseInt(val);
-                    if (q.category === 'B') scoreB += parseInt(val);
-                }
-            }
-
-            if (answered < 20) {
-                const msg = currentLang === 'en' ? `You have answered ${answered} of 20 questions.` : `Anda baru menjawab ${answered} dari 20 pertanyaan.`;
-                showNotification(currentLang === 'en' ? "Not Finished" : "Belum Selesai", msg);
-                return;
-            }
-
-            const categoryData = getCategoryData(totalScore);
-            currentUser.score = totalScore;
-            currentUser.category = categoryData.name;
-
-            const resultObj = {
-                date: new Date().toISOString(), displayDate: currentUser.date,
-                score: totalScore, percent: (totalScore/100)*100, scoreA: scoreA, scoreB: scoreB,
-                categoryID: categoryData.id_key, colorCode: categoryData.colorCode
-            };
+        // Tab Navigasi Bahasa
+        function switchLang(lang) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
             
-            currentUser.currentResultObj = resultObj;
-            saveToHistory(resultObj); 
-            renderResultsPage(resultObj, categoryData);
-            navigate('results');
+            document.getElementById('content-' + lang).classList.add('active');
+            event.target.classList.add('active');
         }
 
-        function getCategoryData(score) {
-            // Multi-language category data
-            const cat = {
-                v_clean: { 
-                    id: { n: "Hati Sangat Bersih", m: "Alhamdulillah. Anda memiliki kebiasaan yang baik dalam menjaga hati.", a: ["Pertahankan rutinitas ibadah.", "Sebarkan energi positif.", "Perbanyak rasa syukur."] },
-                    en: { n: "Very Pure Heart", m: "Alhamdulillah. You have great habits in keeping a pure heart.", a: ["Maintain your good routines.", "Spread positive energy.", "Increase gratitude."] },
-                    jv: { n: "Ati Resik Sanget", m: "Alhamdulillah. Panjenengan gadhah pakulinan ingkang sae.", a: ["Pertahanake ibadah.", "Sebarake energi positif.", "Kathahi syukur."] }
-                },
-                clean: {
-                    id: { n: "Hati Baik", m: "Anda berada di jalan yang baik. Ada beberapa bagian perlu ditingkatkan.", a: ["Pertahankan keikhlasan.", "Tingkatkan dzikir.", "Latih memaafkan."] },
-                    en: { n: "Good Heart", m: "You are on a good path. Some areas need improvement.", a: ["Maintain sincerity.", "Increase remembrance.", "Practice forgiveness."] },
-                    jv: { n: "Ati Sae", m: "Panjenengan wonten ing margi ingkang sae. Wonten sekedhik ingkang kedah dipundandani.", a: ["Pertahanake keikhlasan.", "Tingkatake dzikir.", "Latih paring pangapunten."] }
-                },
-                need_mgt: {
-                    id: { n: "Perlu Menata Hati", m: "Masih terdapat sifat yang perlu diperbaiki. Perbanyak muhasabah.", a: ["Hindari iri hati.", "Latih memaafkan.", "Perbaiki niat.", "Jaga lisan."] },
-                    en: { n: "Needs Heart Management", m: "Some traits need correction. Increase self-reflection.", a: ["Avoid envy.", "Practice forgiving.", "Fix intentions.", "Guard your tongue."] },
-                    jv: { n: "Kedah Nata Ati", m: "Taksih wonten sipat ingkang kedah dipundandani. Kathahi muhasabah.", a: ["Tebihi rasa meri.", "Latih paring pangapunten.", "Dandani niat.", "Jaga lisan."] }
-                },
-                less_clean: {
-                    id: { n: "Hati Kurang Bersih", m: "Anda perlu lebih serius memperbaiki diri. Kendalikan emosi.", a: ["Perbaiki ibadah.", "Kendalikan amarah.", "Segera minta maaf.", "Introspeksi 10 menit/hari."] },
-                    en: { n: "Less Pure Heart", m: "You need to seriously improve yourself. Control your emotions.", a: ["Improve worship.", "Control anger.", "Apologize quickly.", "Introspect daily."] },
-                    jv: { n: "Ati Kirang Resik", m: "Panjenengan kedah langkung serius ndandani dhiri. Empet emosi.", a: ["Dandani ibadah.", "Empet rasa duka.", "Enggal nyuwun ngapura.", "Mawas diri saben dinten."] }
-                },
-                bad: {
-                    id: { n: "Perlu Muhasabah Mendalam", m: "Hati memerlukan perhatian lebih. Mulailah dari taubat.", a: ["Perbanyak istighfar.", "Dekatkan diri pada-Nya.", "Jauhi sombong.", "Bersihkan hati dari dendam."] },
-                    en: { n: "Needs Deep Reflection", m: "Your heart needs extra attention. Start with repentance.", a: ["Increase repentance.", "Get closer to God.", "Avoid arrogance.", "Cleanse heart from grudges."] },
-                    jv: { n: "Kedah Muhasabah Lebet", m: "Ati mbetahaken kawigatosan langkung. Wiwiti saking tobat.", a: ["Kathahi istighfar.", "Nyedhak marang Gusti.", "Tebihi gumedhe.", "Resiki ati saking dendam."] }
-                }
-            };
+        // Modal Admin Control
+        function openAdminModal() { document.getElementById('adminModal').classList.add('active'); }
+        function closeAdminModal() { document.getElementById('adminModal').classList.remove('active'); resetForm(); }
 
-            let c, bg, hex, key;
-            if (score >= 85) { key = 'v_clean'; bg = "bg-emerald-500"; hex = "#10b981"; }
-            else if (score >= 70) { key = 'clean'; bg = "bg-teal-400"; hex = "#2dd4bf"; }
-            else if (score >= 55) { key = 'need_mgt'; bg = "bg-yellow-400"; hex = "#facc15"; }
-            else if (score >= 40) { key = 'less_clean'; bg = "bg-orange-500"; hex = "#f97316"; }
-            else { key = 'bad'; bg = "bg-red-500"; hex = "#ef4444"; }
-
-            return { id_key: key, name: cat[key][currentLang].n, bgClass: bg, colorCode: hex, msg: cat[key][currentLang].m, advice: cat[key][currentLang].a };
+        function openDetail(index) {
+            const item = newsList[index];
+            document.getElementById('detailTitle').innerText = item.title;
+            document.getElementById('detailText').innerText = item.content;
+            document.getElementById('detailImg').src = item.image;
+            document.getElementById('detailModal').classList.add('active');
         }
 
-        function renderResultsPage(res, catData) {
-            document.getElementById('resName').innerText = currentUser.name;
-            document.getElementById('resDate').innerText = res.displayDate;
-            document.getElementById('resPercent').innerText = res.percent + "%";
-            document.getElementById('scoreDisplay').innerText = res.score;
-            document.getElementById('categoryDisplay').innerText = catData.name;
-            document.getElementById('feedbackMessage').innerText = catData.msg;
-            document.getElementById('resultHeader').className = `p-8 sm:p-10 text-center text-white transition-colors duration-500 ${catData.bgClass}`;
-            document.getElementById('adviceList').innerHTML = catData.advice.map(adv => `<li class="flex items-start text-gray-700 dark:text-gray-300"><i class="fas fa-check text-brand-500 mt-1 mr-3"></i> <span>${adv}</span></li>`).join('');
-            renderResultCharts(res, catData);
+        function openDetailImage(imgSrc, title) {
+            document.getElementById('detailTitle').innerText = title;
+            document.getElementById('detailText').innerText = "Kajian spesial bersama Latif Safruddin (Founder PT. Webdigital Marketing). Membahas pentingnya adaptasi digital tanpa meninggalkan kewajiban utama beribadah dan sholat berjamaah di masjid.";
+            document.getElementById('detailImg').src = imgSrc;
+            document.getElementById('detailModal').classList.add('active');
         }
 
-        function renderResultCharts(res, catData) {
-            const isDark = document.documentElement.classList.contains('dark');
-            const textColor = isDark ? '#e5e7eb' : '#374151';
-            const gridColor = isDark ? '#374151' : '#e5e7eb';
+        function closeDetailModal() { document.getElementById('detailModal').classList.remove('active'); }
 
-            if (doughnutChartInstance) doughnutChartInstance.destroy();
-            doughnutChartInstance = new Chart(document.getElementById('doughnutChart').getContext('2d'), {
-                type: 'doughnut',
-                data: {
-                    labels: [i18n[currentLang].chart_yours, i18n[currentLang].chart_left],
-                    datasets: [{ data: [res.score, 100 - res.score], backgroundColor: [catData.colorCode, isDark ? '#374151' : '#e5e7eb'], borderWidth: 0 }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: textColor } } }, cutout: '75%' }
-            });
-
-            if (radarChartInstance) radarChartInstance.destroy();
-            radarChartInstance = new Chart(document.getElementById('radarChart').getContext('2d'), {
-                type: 'radar',
-                data: {
-                    labels: [i18n[currentLang].q_catA, i18n[currentLang].q_catB],
-                    datasets: [{ data: [res.scoreA, res.scoreB], backgroundColor: `${catData.colorCode}40`, borderColor: catData.colorCode, pointBackgroundColor: catData.colorCode, borderWidth: 2 }]
-                },
-                options: {
-                    responsive: true, maintainAspectRatio: false,
-                    scales: { r: { angleLines: { color: gridColor }, grid: { color: gridColor }, pointLabels: { color: textColor, font: { size: 12 } }, ticks: { display: false, min: 0, max: 50, stepSize: 10 } } },
-                    plugins: { legend: { display: false } }
-                }
-            });
+        function showDonationInfo() {
+            document.getElementById('donationModal').classList.add('active');
+        }
+        function closeDonationModal() {
+            document.getElementById('donationModal').classList.remove('active');
         }
 
-        function saveToHistory(resultObj) {
-            let history = JSON.parse(localStorage.getItem('notoati_history') || '[]');
-            history.push(resultObj);
-            localStorage.setItem('notoati_history', JSON.stringify(history));
-        }
-
-        function clearHistory() {
-            const confirmMsg = currentLang === 'en' ? "Clear all history?" : "Yakin hapus riwayat?";
-            if(confirm(confirmMsg)) {
-                localStorage.removeItem('notoati_history');
-                renderHistoryChart();
+        function copyRekening(text) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showToast("Nomor rekening berhasil disalin!");
+                }).catch(() => {
+                    fallbackCopyText(text);
+                });
+            } else {
+                fallbackCopyText(text);
             }
         }
 
-        function renderHistoryChart() {
-            const history = JSON.parse(localStorage.getItem('notoati_history') || '[]');
-            const ctx = document.getElementById('historyChart').getContext('2d');
-            const isDark = document.documentElement.classList.contains('dark');
-            
-            if (historyChartInstance) historyChartInstance.destroy();
-
-            if (history.length === 0) {
-                ctx.clearRect(0,0, ctx.canvas.width, ctx.canvas.height);
-                ctx.font = '14px Inter'; ctx.fillStyle = isDark ? '#e5e7eb' : '#374151'; ctx.textAlign = 'center';
-                ctx.fillText(i18n[currentLang].chart_empty, ctx.canvas.width/2, ctx.canvas.height/2);
-                return;
+        function fallbackCopyText(text) {
+            const textarea = document.createElement("textarea");
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                showToast("Nomor rekening berhasil disalin!");
+            } catch (err) {
+                showToast("Gagal menyalin nomor rekening.");
             }
+            document.body.removeChild(textarea);
+        }
 
-            historyChartInstance = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: history.map((_, i) => `Test ${i+1}`),
-                    datasets: [{
-                        data: history.map(h => h.score), borderColor: '#22c55e', backgroundColor: '#22c55e20', borderWidth: 2,
-                        pointBackgroundColor: history.map(h => h.colorCode), pointBorderColor: '#fff', pointRadius: 6, fill: true, tension: 0.3
-                    }]
-                },
-                options: {
-                    responsive: true, maintainAspectRatio: false,
-                    scales: { y: { beginAtZero: true, max: 100, grid: { color: isDark ? '#374151' : '#e5e7eb' }, ticks: { color: isDark ? '#e5e7eb' : '#374151' } }, x: { grid: { display: false }, ticks: { color: isDark ? '#e5e7eb' : '#374151' } } },
-                    plugins: { legend: { display: false } }
+        // Simpan / Terbitkan Berita (Tambah atau Edit)
+        function handleSaveNews(event) {
+            event.preventDefault();
+            const editIndex = document.getElementById('editIndex').value;
+            const title = document.getElementById('titleId').value;
+            const content = document.getElementById('contentId').value;
+            let image = document.getElementById('imageUrl').value.trim();
+
+            if (uploadedBase64Image !== "") {
+                image = uploadedBase64Image;
+            } else if (!image) {
+                // Jika edit dan tidak ganti gambar, pertahankan gambar lama
+                if (editIndex !== "") {
+                    image = newsList[editIndex].image;
+                } else {
+                    image = "https://images.unsplash.com/photo-1591123120675-6f7f1aae028b?q=80&w=600&auto=format&fit=crop";
                 }
-            });
-        }
-
-        function updateChartsTheme() {
-            if (document.getElementById('results').classList.contains('active-section') && currentUser.currentResultObj) {
-                renderResultCharts(currentUser.currentResultObj, getCategoryData(currentUser.currentResultObj.score));
             }
-            if (document.getElementById('history').classList.contains('active-section')) renderHistoryChart();
+
+            if (editIndex === "") {
+                // Tambah baru
+                newsList.unshift({ title, content, image });
+            } else {
+                // Edit data lama
+                newsList[editIndex] = { title, content, image };
+            }
+
+            localStorage.setItem('noto_news', JSON.stringify(newsList));
+            renderNews();
+            resetForm();
+            showToast("Berita berhasil diterbitkan!");
         }
 
-        function exportPDF() {
-            const element = document.getElementById('pdf-content');
-            document.body.classList.add('pdf-mode');
-            const btn = document.querySelector('button[onclick="exportPDF()"]');
-            const originalText = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i>...';
-
-            html2pdf().set({
-                margin: 0.5, filename: `Hasil_Notoati_${currentUser.name}.pdf`, image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, useCORS: true }, jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-            }).from(element).save().then(() => {
-                document.body.classList.remove('pdf-mode'); btn.innerHTML = originalText;
+        // Render Daftar Edit/Hapus di Tabel Admin
+        function renderAdminTable() {
+            const tbody = document.getElementById('adminTableBody');
+            tbody.innerHTML = '';
+            newsList.forEach((item, index) => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${item.title}</td>
+                        <td>
+                            <button class="btn" style="padding: 4px 10px; font-size:0.75rem;" onclick="editNews(${index})">Edit</button>
+                            <button class="btn btn-secondary" style="padding: 4px 10px; font-size:0.75rem; border-color:red; color:red;" onclick="deleteNews(${index})">Hapus</button>
+                        </td>
+                    </tr>
+                `;
             });
         }
 
-        function shareWhatsApp() {
-            if(!currentUser.currentResultObj) return;
-            const text = `*🌿 Hasil Refleksi NOTOATI, RESIKIATI*\n\nNama: ${currentUser.name}\nTanggal: ${currentUser.currentResultObj.displayDate}\nSkor: *${currentUser.currentResultObj.score}/100*\nKategori: *${getCategoryData(currentUser.currentResultObj.score).name}*\n\n"Perbanyak muhasabah, perbaiki niat, dan bersihkan hati."\n\nHubungi admin di wa.me/628551236277`;
-            window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+        function editNews(index) {
+            const item = newsList[index];
+            document.getElementById('editIndex').value = index;
+            document.getElementById('titleId').value = item.title;
+            document.getElementById('contentId').value = item.content;
+            if (!item.image.startsWith('data:image')) {
+                document.getElementById('imageUrl').value = item.image;
+            } else {
+                document.getElementById('imageUrl').value = "";
+            }
+            uploadedBase64Image = "";
+            document.getElementById('imageFile').value = "";
+            document.getElementById('submitBtn').innerText = "Simpan Perubahan";
+            document.getElementById('cancelEditBtn').style.display = "inline-block";
         }
+
+        function deleteNews(index) {
+            newsList.splice(index, 1);
+            localStorage.setItem('noto_news', JSON.stringify(newsList));
+            renderNews();
+            showToast("Berita telah dihapus.");
+        }
+
+        function resetForm() {
+            document.getElementById('newsForm').reset();
+            document.getElementById('editIndex').value = "";
+            uploadedBase64Image = "";
+            document.getElementById('submitBtn').innerText = "Terbitkan Berita";
+            document.getElementById('cancelEditBtn').style.display = "none";
+        }
+
+        // Jalankan render awal saat halaman dimuat
+        renderNews();
     </script>
 </body>
 </html>
