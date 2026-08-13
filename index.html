@@ -509,6 +509,91 @@
             if (tabName === 'beranda') {
                 document.getElementById('tab-beranda').classList.remove('hidden');
                 loadPublicArticles();
+// Load Public Articles
+async function loadPublicArticles() {
+    const container = document.getElementById('public-articles-container');
+    const countBadge = document.getElementById('article-count');
+    if (!container) return;
+    container.innerHTML = '<div class="col-span-full text-center py-8 text-amber-700/60">Memuat catatan dakwah...</div>';
+
+    try {
+        const q = query(collection(db, "berita_dakwah"));
+        const querySnapshot = await getDocs(q);
+        let articles = [];
+        querySnapshot.forEach((docSnap) => {
+            articles.push({ id: docSnap.id, ...docSnap.data() });
+        });
+
+        if (countBadge) countBadge.innerText = `${articles.length} Artikel`;
+
+        if (articles.length === 0) {
+            container.innerHTML = '<div class="col-span-full text-center py-8 text-slate-500">Belum ada catatan dakwah yang dipublikasikan.</div>';
+            return;
+        }
+
+        container.innerHTML = '';
+        window._articleCache = {}; // Cache objek artikel untuk menghindari error string HTML
+
+        articles.forEach(art => {
+            window._articleCache[art.id] = art;
+            const imageUrl = art.imageUrl ? art.imageUrl : 'https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?auto=format&fit=crop&w=600&q=80';
+            
+            container.innerHTML += `
+                <div class="bg-white dark:bg-slate-800 border border-amber-100 dark:border-slate-700 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition flex flex-col justify-between">
+                    <div>
+                        <img src="${imageUrl}" alt="Thumbnail" class="w-full h-48 object-cover" onerror="this.src='https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?auto=format&fit=crop&w=600&q=80'">
+                        <div class="p-5">
+                            <span class="text-xs bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-300 px-2.5 py-1 rounded-full font-semibold">${art.category || 'Umum'}</span>
+                            <h4 class="font-bold text-amber-900 dark:text-amber-100 mt-2 text-lg">${escapeHtml(art.title)}</h4>
+                            <p class="text-sm text-slate-600 dark:text-slate-300 mt-2 line-clamp-3 leading-relaxed">${escapeHtml(art.content)}</p>
+                        </div>
+                    </div>
+                    <div class="p-5 pt-0 flex justify-between items-center text-xs text-slate-400">
+                        <span>${art.author || 'Tim Dakwah'}</span>
+                        <button onclick="viewFullArticleById('${art.id}')" class="text-amber-700 dark:text-amber-400 font-semibold hover:underline cursor-pointer">Baca Selengkapnya &rarr;</button>
+                    </div>
+                </div>
+            `;
+        });
+    } catch (err) {
+        console.error(err);
+        container.innerHTML = '<div class="col-span-full text-center py-8 text-red-500">Gagal memuat artikel dari database.</div>';
+    }
+}
+
+// Fungsi Aman untuk Membuka Detail Artikel via Cache ID
+window.viewFullArticleById = function(id) {
+    const art = window._articleCache && window._articleCache[id];
+    if (!art) {
+        alert('Data artikel tidak ditemukan.');
+        return;
+    }
+    
+    // Buat atau tampilkan modal baca artikel
+    let modal = document.getElementById('read-modal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'read-modal';
+        modal.className = 'fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm';
+        document.body.appendChild(modal);
+    }
+
+    const imageUrl = art.imageUrl ? art.imageUrl : 'https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?auto=format&fit=crop&w=600&q=80';
+
+    modal.innerHTML = `
+        <div class="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 shadow-2xl border border-amber-200 dark:border-slate-700 relative">
+            <button onclick="document.getElementById('read-modal').remove()" class="absolute top-4 right-4 bg-amber-100 dark:bg-slate-800 text-amber-900 dark:text-amber-200 w-8 h-8 rounded-full font-bold flex items-center justify-center hover:bg-amber-200">&times;</button>
+            <span class="text-xs bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-300 px-2.5 py-1 rounded-full font-semibold">${art.category || 'Umum'}</span>
+            <h2 class="text-2xl font-bold text-amber-900 dark:text-amber-100 mt-3 mb-4">${escapeHtml(art.title)}</h2>
+            <img src="${imageUrl}" class="w-full h-64 object-cover rounded-xl mb-4 shadow" alt="Ilustrasi">
+            <div class="text-base leading-relaxed whitespace-pre-wrap text-slate-700 dark:text-slate-300 space-y-4">${escapeHtml(art.content)}</div>
+            <div class="mt-6 pt-4 border-t border-amber-100 dark:border-slate-800 flex justify-between items-center text-xs text-slate-500">
+                <span>Ditulis oleh: ${art.author || 'Tim Dakwah'}</span>
+                <button onclick="document.getElementById('read-modal').remove()" class="px-4 py-2 bg-amber-700 text-white rounded-xl font-semibold hover:bg-amber-800">Tutup</button>
+            </div>
+        </div>
+    `;
+};
             } else if (tabName === 'video') {
                 document.getElementById('tab-video').classList.remove('hidden');
             } else if (tabName === 'dakwahku') {
