@@ -1,939 +1,413 @@
 <!DOCTYPE html>
-<html lang="id" class="light">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>mediadesaonline JATENG-DIY - NOTOATI RESIKI ATI</title>
-    
+    <title>NOTO ATI RESIKI ATI</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#16a34a', // Hijau Desa
-                        secondary: '#1e293b'
-                    }
-                }
-            }
-        }
-    </script>
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <style>
-        /* Custom scrollbar for webkit */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; }
-        .dark ::-webkit-scrollbar-track { background: #334155; }
-        ::-webkit-scrollbar-thumb { background: #16a34a; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #15803d; }
-        
-        .fade-in { animation: fadeIn 0.3s ease-in-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        .animate-marquee {
+            display: inline-block;
+            white-space: nowrap;
+            animation: marquee 25s linear infinite;
+        }
+        .animate-marquee:hover {
+            animation-play-state: paused;
+        }
     </style>
 </head>
-<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100 transition-colors duration-300 min-h-screen flex flex-col font-sans">
+<body class="bg-amber-50/50 text-slate-800 font-sans min-h-screen flex flex-col">
 
-    <!-- HEADER DENGAN LOGO, TEKS UTAMA, & KONTROL -->
-    <header class="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-50 border-b border-gray-200 dark:border-gray-700">
-        <div class="container mx-auto px-4 py-3 flex flex-col md:flex-row justify-between items-center gap-4">
-            
-            <!-- LOGO & TEKS UTAMA -->
-            <a href="#" onclick="window.switchTab('home')" class="flex items-center gap-4 group">
-                <img src="logo.jpeg" alt="Logo Noto Ati" class="h-16 md:h-20 w-auto object-contain rounded-lg shadow-sm" onerror="this.src='https://placehold.co/100x100/16a34a/ffffff?text=Logo'">
-                <div class="flex flex-col">
-                    <div class="text-xl md:text-3xl font-black tracking-tight text-yellow-600 dark:text-yellow-500 flex flex-wrap items-center gap-2 drop-shadow-sm">
-                        <span>NOTOATI RESIKI ATI</span>
-                    </div>
-                    <span class="text-xs md:text-sm font-semibold text-gray-600 dark:text-gray-400 tracking-wider uppercase mt-0.5" data-lang-key="sub_brand">menebarkan dakwah kebaikan</span>
+    <!-- Header Utama -->
+    <header class="bg-gradient-to-r from-amber-700 via-yellow-600 to-amber-800 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center">
+            <div class="flex items-center space-x-3 mb-3 md:mb-0">
+                <div class="bg-white p-2 rounded-full shadow-inner text-amber-700 font-bold text-xl">
+                    🕌
                 </div>
-            </a>
-
-            <!-- KONTROL BAHASA & DARK MODE -->
-            <div class="flex items-center gap-4">
-                <select id="languageSelect" onchange="window.changeLanguage(this.value)" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-sm rounded-lg px-3 py-1.5 focus:ring-primary focus:border-primary outline-none">
-                    <option value="id">Bahasa Indonesia</option>
-                    <option value="jv">Basa Jawa</option>
-                    <option value="en">English</option>
-                </select>
-
-                <button onclick="window.toggleDarkMode()" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition" title="Ganti Mode">
-                    <i id="themeIcon" class="fa-solid fa-moon"></i>
-                </button>
+                <div>
+                    <h1 class="text-2xl font-extrabold tracking-wider drop-shadow">NOTO ATI RESIKI ATI</h1>
+                    <p class="text-xs text-amber-200 tracking-wide">MENEBAR DAKWAH KEBAIKAN UNTUK DUNIA</p>
+                </div>
             </div>
+            <!-- Navigasi Utama -->
+            <nav class="flex flex-wrap gap-2 justify-center">
+                <button onclick="switchTab('beranda')" class="px-4 py-2 bg-amber-900/60 hover:bg-amber-900 rounded-lg text-sm font-semibold transition border border-amber-600/50 shadow">Beranda</button>
+                <button onclick="switchTab('dakwahku')" class="px-4 py-2 bg-amber-900/60 hover:bg-amber-900 rounded-lg text-sm font-semibold transition border border-amber-600/50 shadow">Dakwahku</button>
+            </nav>
         </div>
     </header>
 
-    <!-- KUMPULAN DALIL AL-QUR'AN & HADIST (TEKS BERJALAN DINAMIS) -->
-    <div class="bg-primary text-white py-2 px-4 shadow-inner overflow-hidden whitespace-nowrap flex items-center">
-        <div class="bg-green-800 px-3 py-1 rounded text-xs font-bold uppercase mr-3 tracking-wider flex items-center gap-1 shadow z-10 relative">
-            <i class="fa-solid fa-book-quran"></i> <span data-lang-key="ticker_title">MUTIARA DALIL AL-QUR'AN & HADIST</span>
+    <!-- Teks Berjalan (Kumpulan Dalil Al-Qur'an dan Hadist) -->
+    <div class="bg-amber-100 border-y border-amber-200 text-amber-900 py-2.5 overflow-hidden shadow-inner">
+        <div class="max-w-7xl mx-auto flex items-center px-4">
+            <span class="bg-amber-700 text-white text-xs px-2.5 py-1 rounded font-bold uppercase tracking-wider mr-3 shrink-0 shadow">Dalil & Mutiara</span>
+            <div class="overflow-hidden relative w-full whitespace-nowrap">
+                <div class="animate-marquee text-sm font-medium">
+                    "Sesungguhnya yang takut kepada Allah diantara hamba-hambaNya hanyalah Ulama [Fâthir/35: 28]" &nbsp;&bull;&nbsp; 
+                    “Wahai sekalian manusia, bertaubatlah dan mohon ampunlah kalian kepada Allah, karena sesungguhnya aku bertaubat kepadanya tuju puluh kali dalam sehari” [HR. al-Bukhâri no. 5948, at-Tirmidzi no.3312, Ibnu Mâjah no.3816] &nbsp;&bull;&nbsp; 
+                    "Jika kamu menghitung ni’mat Allah, maka kamu tidak akan dapat menghinggakannya, sesungguhnya manusia itu sangat zalim dan sangat mengingkari (nk’mat Allâh) [Ibrâhîm/14:34]" &nbsp;&bull;&nbsp; 
+                    “Maukah kalian berdua aku tunjukan pada sesuatu yang lebih baik dari seorang pembantu?! Apabila kalian hendak tidur, maka ucapkanlah subhânallâh 33 kali, alhamdulillâh 33 kali dan Allahu akbar 34 kali. Maka itu semua jauh lebih baik bagi kalian dari seorang pembantu” [HR. al-Bukhâri no.3502, Muslim no.2727, Abu Dawud no. 2988]
+                </div>
+            </div>
         </div>
-        <marquee class="text-sm font-medium" scrollamount="6">
-            ✨ "Sesungguhnya yang takut kepada Allah di antara hamba-hamba-Nya hanyalah ulama" [Fâthir/35: 28] • 🤲 “Wahai sekalian manusia, bertaubatlah dan mohon ampunlah kalian kepada Allah, karena sesungguhnya aku bertaubat kepadanya tujuh puluh kali dalam sehari” [HR. al-Bukhâri no. 5948] • 📖 “Jika kamu menghitung ni’mat Allah, maka kamu tidak akan dapat menghinggakannya...” [Ibrâhîm/14:34] • 🌙 Amalan Dzikir Sebelum Tidur: “Ucapkanlah subhânallâh 33x, alhamdulillâh 33x dan Allahu akbar 34x” [HR. al-Bukhâri no.3502, Muslim no.2727] • Layanan WhatsApp Center: 08551236277.
-        </marquee>
     </div>
 
-    <!-- NAVIGASI UTAMA -->
-    <nav class="bg-gray-900 text-white shadow-md">
-        <div class="container mx-auto px-4 flex flex-wrap justify-between items-center py-3 gap-2">
-            <div class="flex flex-wrap gap-2">
-                <button onclick="window.switchTab('home')" id="tabBtn-home" class="px-4 py-2 rounded-lg font-medium bg-primary text-white transition flex items-center gap-2 tab-button">
-                    <i class="fa-solid fa-newspaper"></i> <span data-lang-key="nav_home">Beranda Berita</span>
-                </button>
-                <button onclick="window.switchTab('hikmah')" id="tabBtn-hikmah" class="px-4 py-2 rounded-lg font-medium bg-gray-800 hover:bg-gray-700 text-gray-200 transition flex items-center gap-2 tab-button">
-                    <i class="fa-solid fa-book-quran"></i> <span>Mutiara Hikmah</span>
-                </button>
-                <button onclick="window.switchTab('editor')" id="tabBtn-editor" class="px-4 py-2 rounded-lg font-medium bg-gray-800 hover:bg-gray-700 text-gray-200 transition flex items-center gap-2 tab-button">
-                    <i class="fa-solid fa-pen-to-square"></i> <span data-lang-key="nav_editor">Dakwahku</span>
-                </button>
-                <button onclick="window.switchTab('archive')" id="tabBtn-archive" class="px-4 py-2 rounded-lg font-medium bg-gray-800 hover:bg-gray-700 text-gray-200 transition flex items-center gap-2 tab-button">
-                    <i class="fa-solid fa-box-archive"></i> <span data-lang-key="nav_archive">Arsip Terpisah</span>
-                </button>
-            </div>
-            <div>
-                <button onclick="window.openRedaksiModal()" class="px-4 py-2 rounded-lg font-medium bg-amber-600 hover:bg-amber-700 text-white transition flex items-center gap-2 shadow">
-                    <i class="fa-solid fa-users-rectangle"></i> <span>TIM DAKWAH</span>
-                </button>
-            </div>
-        </div>
-    </nav>
+    <!-- Konten Utama -->
+    <main class="max-w-7xl mx-auto px-4 py-6 flex-grow w-full grid grid-cols-1 lg:grid-cols-4 gap-6">
 
-    <!-- KONTEN UTAMA HALAMAN -->
-    <div class="container mx-auto px-4 py-8 flex-grow grid grid-cols-1 lg:grid-cols-4 gap-8">
-        
-        <!-- KOLOM UTAMA -->
-        <main class="lg:col-span-3 space-y-6 relative">
-            
-            <!-- Overlay Loading State -->
-            <div id="loadingOverlay" class="absolute inset-0 bg-white/80 dark:bg-gray-900/80 z-20 flex justify-center items-start pt-20 rounded-xl">
-                <div class="flex flex-col items-center gap-3">
-                    <i class="fa-solid fa-circle-notch fa-spin text-4xl text-primary"></i>
-                    <p class="font-bold text-gray-600 dark:text-gray-300">Menghubungkan ke Server...</p>
-                </div>
-            </div>
+        <!-- Area Konten Dinamis (Kiri - 3 Kolom) -->
+        <div class="lg:col-span-3 space-y-6">
 
-            <!-- TAB 1: BERANDA BERITA -->
-            <div id="view-home" class="space-y-6 view-section">
-                <!-- HERO BANNER -->
-                <div class="bg-gray-100 dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden relative">
-                    <img src="aku1.jpeg" alt="Jamannya Udah Digital Semua" class="w-full h-auto object-cover max-h-[400px]">
-                </div>
-
-                <!-- KARTU KUTIPAN SPESIAL (HIKMAH UTAMA) -->
-                <div class="bg-gradient-to-r from-emerald-800 to-primary text-white p-6 rounded-2xl shadow-lg relative overflow-hidden">
-                    <div class="absolute -right-6 -bottom-6 text-white/10 text-9xl">
-                        <i class="fa-solid fa-quote-right"></i>
-                    </div>
-                    <div class="relative z-10 space-y-3">
-                        <span class="bg-white/20 text-xs px-3 py-1 rounded-full font-semibold uppercase tracking-wider">Ayat & Hadits Pilihan</span>
-                        <p class="text-lg md:text-xl font-serif italic leading-relaxed">
-                            “Sesungguhnya yang takut kepada Allah di antara hamba-hamba-Nya hanyalah ulama” <span class="text-yellow-300 font-sans not-italic text-sm font-bold">[Fâthir/35: 28]</span>
-                        </p>
-                        <p class="text-sm text-green-100">
-                            Mari senantiasa bertaubat, memohon ampun, dan menghitung nikmat Allah dengan penuh syukur agar hati senantiasa bersih (Resiki Ati).
+            <!-- TAB: BERANDA -->
+            <div id="tab-beranda" class="space-y-6">
+                <!-- Banner Sambutan -->
+                <div class="bg-gradient-to-br from-amber-700 to-amber-900 text-white rounded-2xl p-6 md:p-8 shadow-xl relative overflow-hidden border border-amber-600">
+                    <div class="relative z-10">
+                        <span class="bg-amber-500/30 text-amber-200 text-xs px-3 py-1 rounded-full font-semibold border border-amber-400/30">Portal Dakwah & Pencerahan Hati</span>
+                        <h2 class="text-3xl font-bold mt-3 mb-2">Selamat Datang di Noto Ati Resiki Ati</h2>
+                        <p class="text-amber-100 text-sm md:text-base leading-relaxed max-w-2xl">
+                            Mari membersihkan hati dan menata jiwa melalui cahaya Al-Qur'an, Hadits, serta amalan harian demi menggapai ketenangan hidup di dunia dan keselamatan di akhirat.
                         </p>
                     </div>
+                    <div class="absolute right-[-20px] bottom-[-20px] text-9xl opacity-10 select-none">📿</div>
                 </div>
 
-                <!-- FILTER & PENCARIAN -->
-                <div class="flex flex-col md:flex-row justify-between items-center gap-4 bg-white dark:bg-gray-800 p-4 rounded-xl shadow-md border border-gray-200 dark:border-gray-700">
-                    <div class="flex items-center gap-2 w-full md:w-auto">
-                        <h3 class="font-bold text-lg flex items-center gap-2">
-                            <i class="fa-solid fa-earth-americas text-primary"></i> <span data-lang-key="latest_news_title">Berita Desa Terkini</span>
-                            <span id="activeFilterBadge" class="hidden ml-2 text-xs bg-primary text-white px-2 py-1 rounded-full"></span>
-                        </h3>
-                    </div>
-                    <div class="w-full md:w-72 flex gap-2">
-                        <input type="text" id="searchNewsInput" placeholder="Cari berita atau wilayah..." class="w-full px-3 py-2 text-sm border rounded-lg dark:bg-gray-700 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary dark:text-white">
-                        <button onclick="window.clearFilters()" class="px-3 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition" title="Hapus Filter">
-                            <i class="fa-solid fa-rotate-right"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- FEED BERITA (Grid) -->
-                <div id="newsFeed" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Dinamis dari JavaScript -->
-                </div>
-            </div>
-
-            <!-- TAB 2: MUTIARA HIKMAH & DZIKIR (SPECIAL TAB) -->
-            <div id="view-hikmah" class="hidden space-y-6 view-section">
-                <div class="bg-white dark:bg-gray-800 p-6 md:p-8 rounded-xl shadow-md border border-gray-200 dark:border-gray-700 space-y-6">
-                    <div class="border-b pb-4 dark:border-gray-700">
-                        <h2 class="text-2xl font-black text-primary flex items-center gap-3">
-                            <i class="fa-solid fa-book-quran"></i> Mutiara Hikmah & Amalan Harian
-                        </h2>
-                        <p class="text-sm text-gray-500 mt-1">Kumpulan dalil Al-Qur'an, Hadits shahih, serta panduan dzikir harian untuk ketenangan jiwa.</p>
-                    </div>
-
-                    <div class="grid grid-cols-1 gap-6">
-                        <!-- Card 1 -->
-                        <div class="bg-gray-50 dark:bg-gray-700/50 p-5 rounded-xl border-l-4 border-primary shadow-sm space-y-2">
-                            <h3 class="font-bold text-base text-gray-900 dark:text-white flex items-center gap-2">
-                                <i class="fa-solid fa-star text-amber-500"></i> Khasyah (Rasa Takut Kepada Allah)
-                            </h3>
-                            <p class="text-sm font-serif italic text-gray-700 dark:text-gray-300">
-                                “Sesungguhnya yang takut kepada Allah diantara hamba-hambaNya hanyalah ulama”
-                            </p>
-                            <span class="inline-block text-xs bg-primary/10 text-primary px-2.5 py-1 rounded font-semibold">[Fâthir/35: 28]</span>
-                        </div>
-
-                        <!-- Card 2 -->
-                        <div class="bg-gray-50 dark:bg-gray-700/50 p-5 rounded-xl border-l-4 border-amber-500 shadow-sm space-y-2">
-                            <h3 class="font-bold text-base text-gray-900 dark:text-white flex items-center gap-2">
-                                <i class="fa-solid fa-hands-praying text-amber-500"></i> Anjuran Istighfar Setiap Hari
-                            </h3>
-                            <p class="text-sm font-serif italic text-gray-700 dark:text-gray-300">
-                                “Wahai sekalian manusia, bertaubatlah dan mohon ampunlah kalian kepada Allah, karena sesungguhnya aku bertaubat kepadanya tuju puluh kali dalam sehari”
-                            </p>
-                            <span class="inline-block text-xs bg-amber-500/10 text-amber-600 dark:text-amber-400 px-2.5 py-1 rounded font-semibold">[HR. al-Bukhâri no. 5948, at-Tirmidzi no.3312, Ibnu Mâjah no.3816]</span>
-                        </div>
-
-                        <!-- Card 3 -->
-                        <div class="bg-gray-50 dark:bg-gray-700/50 p-5 rounded-xl border-l-4 border-blue-500 shadow-sm space-y-2">
-                            <h3 class="font-bold text-base text-gray-900 dark:text-white flex items-center gap-2">
-                                <i class="fa-solid fa-scale-balanced text-blue-500"></i> Syukur Nikmat & Peringatan
-                            </h3>
-                            <p class="text-sm font-serif italic text-gray-700 dark:text-gray-300">
-                                “Jika kamu menghitung ni’mat Allah, maka kamu tidak akan dapat menghinggakannya, sesungguhnya manusia itu sangat zalim dan sangat mengingkari (nikmat Allâh)”
-                            </p>
-                            <span class="inline-block text-xs bg-blue-500/10 text-blue-600 dark:text-blue-400 px-2.5 py-1 rounded font-semibold">[Ibrâhîm/14:34]</span>
-                        </div>
-
-                        <!-- Card 4 -->
-                        <div class="bg-gray-50 dark:bg-gray-700/50 p-5 rounded-xl border-l-4 border-emerald-500 shadow-sm space-y-2">
-                            <h3 class="font-bold text-base text-gray-900 dark:text-white flex items-center gap-2">
-                                <i class="fa-solid fa-moon text-emerald-500"></i> Amalan Dzikir Sebelum Tidur (Fadhilah Besar)
-                            </h3>
-                            <p class="text-sm font-serif italic text-gray-700 dark:text-gray-300">
-                                “Maukah kalian berdua aku tunjukan pada sesuatu yang lebih baik dari seorang pembantu?! Apabila kalian hendak tidur, maka ucapkanlah subhânallâh 33 kali, alhamdulillâh 33 kali dan Allahu akbar 34 kali. Maka itu semua jauh lebih baik bagi kalian dari seorang pembantu”
-                            </p>
-                            <div class="pt-2 flex flex-wrap gap-2">
-                                <span class="bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 text-xs px-2 py-1 rounded">Subhanallah (33x)</span>
-                                <span class="bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 text-xs px-2 py-1 rounded">Alhamdulillah (33x)</span>
-                                <span class="bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 text-xs px-2 py-1 rounded">Allahu Akbar (34x)</span>
-                            </div>
-                            <span class="inline-block text-xs bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-2.5 py-1 rounded font-semibold mt-1">[HR. al-Bukhâri no.3502, Muslim no.2727, Abu Dawud no. 2988]</span>
+                <!-- Daftar Artikel / Berita Dakwah dari Firebase -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-amber-100">
+                    <h3 class="text-xl font-bold text-amber-900 mb-4 pb-2 border-b border-amber-100 flex items-center justify-between">
+                        <span>📖 Artikel & Catatan Dakwah Terbaru</span>
+                        <span id="article-count" class="text-xs bg-amber-100 text-amber-800 px-2.5 py-1 rounded-full">Memuat...</span>
+                    </h3>
+                    <div id="public-articles-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Artikel akan dimuat otomatis lewat script Firebase -->
+                        <div class="col-span-full text-center py-8 text-amber-700/60">
+                            Sedang memuat catatan dakwah...
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- TAB 3: DAKWAHKU (PROTECTED WITH PASSWORD) -->
-            <div id="view-editor" class="hidden space-y-6 view-section">
-                <!-- Login Gate (Tampil jika belum memasukkan password benar) -->
-                <div id="dakwahkuLoginGate" class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-md border border-gray-200 dark:border-gray-700 text-center max-w-md mx-auto space-y-4">
-                    <div class="w-16 h-16 bg-primary/10 text-primary rounded-full flex items-center justify-center mx-auto text-2xl">
-                        <i class="fa-solid fa-lock"></i>
-                    </div>
-                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Akses Dakwahku</h2>
-                    <p class="text-sm text-gray-500">Masukkan kata sandi pengelola untuk masuk ke menu Entri & Kelola Dakwah.</p>
-                    <form onsubmit="window.verifyDakwahPassword(event)" class="space-y-4 pt-2">
-                        <input type="password" id="dakwahPasswordInput" required placeholder="Masukkan kata sandi..." class="w-full px-4 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary dark:text-white text-center">
-                        <button type="submit" class="w-full bg-primary hover:bg-green-700 text-white font-medium py-2.5 rounded-lg transition shadow">
-                            Buka Akses Dakwahku
-                        </button>
+            <!-- TAB: DAKWAHKU (Dilindungi Password) -->
+            <div id="tab-dakwahku" class="hidden space-y-6">
+                <!-- Form Login Password -->
+                <div id="dakwahku-login" class="bg-white rounded-2xl p-8 shadow-sm border border-amber-100 max-w-md mx-auto text-center">
+                    <div class="text-4xl mb-3">🔐</div>
+                    <h3 class="text-xl font-bold text-amber-900 mb-2">Akses Terbatas Dakwahku</h3>
+                    <p class="text-sm text-slate-600 mb-6">Masukkan kata sandi untuk mengelola dan menerbitkan catatan dakwah.</p>
+                    <form onsubmit="handleLogin(event)" class="space-y-4">
+                        <input type="password" id="dakwah-password" placeholder="Masukkan password..." class="w-full px-4 py-3 rounded-xl border border-amber-200 focus:outline-none focus:ring-2 focus:ring-amber-500 text-center font-mono" required>
+                        <button type="submit" class="w-full bg-amber-700 hover:bg-amber-800 text-white font-semibold py-3 rounded-xl shadow transition">Masuk Dashboard</button>
                     </form>
                 </div>
 
-                <!-- Dashboard Dakwahku (Tampil setelah password benar) -->
-                <div id="dakwahkuContent" class="hidden space-y-6">
-                    <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-200 dark:border-gray-700 space-y-4">
-                        <div class="border-b pb-3 dark:border-gray-700 flex justify-between items-center">
-                            <h2 class="text-xl font-bold flex items-center gap-2 text-primary">
-                                <i class="fa-solid fa-pen-nib"></i> <span id="formHeaderTitle" data-lang-key="form_new_title">Entri Berita Baru</span>
-                            </h2>
-                            <div class="flex items-center gap-2">
-                                <button onclick="window.resetNewsForm()" id="cancelEditBtn" class="hidden text-xs bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded transition">Batal Edit</button>
-                                <button onclick="window.lockDakwahku()" class="text-xs bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded transition flex items-center gap-1"><i class="fa-solid fa-lock"></i> Kunci Lagi</button>
-                            </div>
-                        </div>
+                <!-- Dashboard Dakwahku (Tampil Setelah Password Benar) -->
+                <div id="dakwahku-dashboard" class="hidden space-y-6">
+                    <div class="flex justify-between items-center bg-white p-4 rounded-xl border border-amber-100 shadow-sm">
+                        <h3 class="font-bold text-amber-900 text-lg">✨ Dashboard Penulis Dakwahku</h3>
+                        <button onclick="handleLock()" class="text-xs bg-red-100 hover:bg-red-200 text-red-700 px-3 py-1.5 rounded-lg font-semibold transition">🔒 Kunci Lagi</button>
+                    </div>
 
-                        <form id="newsForm" class="space-y-4">
-                            <input type="hidden" id="editDocId">
-                            <input type="hidden" id="postStatus" value="published">
+                    <!-- Form Tambah Berita -->
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-amber-100">
+                        <h4 class="font-bold text-amber-900 mb-4 text-base">Buat Catatan / Berita Dakwah Baru</h4>
+                        <form onsubmit="publishArticle(event)" class="space-y-4">
                             <div>
-                                <label class="block text-sm font-medium mb-1" data-lang-key="lbl_title">Judul Berita</label>
-                                <input type="text" id="newsTitle" required placeholder="Masukkan judul berita utama desa..." class="w-full px-4 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary dark:text-white">
-                            </div>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-sm font-medium mb-1" data-lang-key="lbl_category">Kategori / Wilayah</label>
-                                    <input type="text" id="newsCategory" required placeholder="Contoh: Sleman / Kab. Banyumas / Noto Ati" class="w-full px-4 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary dark:text-white">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium mb-1" data-lang-key="lbl_image">URL Gambar Utama</label>
-                                    <input type="url" id="newsImage" placeholder="https://example.com/gambar.jpg" class="w-full px-4 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary dark:text-white">
-                                </div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Judul Artikel / Dakwah</label>
+                                <input type="text" id="post-title" placeholder="Contoh: Keutamaan Istighfar di Waktu Sahur..." class="w-full px-4 py-2.5 rounded-xl border border-amber-200 focus:outline-none focus:ring-2 focus:ring-amber-500 text-sm" required>
                             </div>
                             <div>
-                                <label class="block text-sm font-medium mb-1" data-lang-key="lbl_content">Isi Berita Lengkap</label>
-                                <textarea id="newsContent" rows="6" required placeholder="Tulis narasi berita secara lengkap di sini..." class="w-full px-4 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary dark:text-white"></textarea>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Kategori</label>
+                                <select id="post-category" class="w-full px-4 py-2.5 rounded-xl border border-amber-200 focus:outline-none focus:ring-2 focus:ring-amber-500 text-sm bg-white">
+                                    <option value="Noto Ati">Noto Ati</option>
+                                    <option value="Resiki Ati">Resiki Ati</option>
+                                    <option value="Aqidah & Iman">Aqidah & Iman</option>
+                                    <option value="Al-Qur'an & Tadabbur">Al-Qur'an & Tadabbur</option>
+                                    <option value="Ibadah">Ibadah</option>
+                                    <option value="Akhlak">Akhlak</option>
+                                    <option value="Keluarga">Keluarga</option>
+                                    <option value="Kehidupan & Rezeki">Kehidupan & Rezeki</option>
+                                    <option value="Dakwah Sosial">Dakwah Sosial</option>
+                                    <option value="Akhirat & Kematian">Akhirat & Kematian</option>
+                                </select>
                             </div>
-                            <div class="flex flex-wrap gap-3 pt-2">
-                                <button type="button" onclick="window.submitForm('draft')" class="bg-amber-600 hover:bg-amber-700 text-white font-medium px-5 py-2.5 rounded-lg transition flex items-center gap-2">
-                                    <i class="fa-solid fa-floppy-disk"></i> <span data-lang-key="btn_save_draft">Simpan Draf</span>
-                                </button>
-                                <button type="button" onclick="window.submitForm('published')" class="bg-primary hover:bg-green-700 text-white font-medium px-6 py-2.5 rounded-lg transition flex items-center gap-2">
-                                    <i class="fa-solid fa-paper-plane"></i> <span data-lang-key="btn_publish">Publikasikan Berita</span>
-                                </button>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Isi Lengkap / Berita Utuh</label>
+                                <textarea id="post-content" rows="6" placeholder="Tuliskan isi artikel atau berita dakwah selengkap mungkin di sini..." class="w-full px-4 py-2.5 rounded-xl border border-amber-200 focus:outline-none focus:ring-2 focus:ring-amber-500 text-sm" required></textarea>
                             </div>
+                            <button type="submit" id="submit-btn" class="bg-amber-700 hover:bg-amber-800 text-white font-semibold px-6 py-2.5 rounded-xl text-sm shadow transition">Publikasikan ke Firebase</button>
                         </form>
                     </div>
 
-                    <!-- DAFTAR KELOLA BERITA -->
-                    <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-200 dark:border-gray-700 space-y-4">
-                        <h3 class="font-bold text-lg border-b pb-2 dark:border-gray-700 flex items-center gap-2">
-                            <i class="fa-solid fa-list-check text-primary"></i> <span data-lang-key="manage_title">Kelola Entri Berita (Draf & Terbitan)</span>
-                        </h3>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-sm text-left">
-                                <thead class="bg-gray-50 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
-                                    <tr>
-                                        <th class="px-4 py-2 rounded-tl-lg">Judul & Wilayah</th>
-                                        <th class="px-4 py-2 text-center">Status</th>
-                                        <th class="px-4 py-2 text-center">Tanggal</th>
-                                        <th class="px-4 py-2 text-center rounded-tr-lg">Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="manageNewsList" class="divide-y dark:divide-gray-700">
-                                    <!-- Dinamis dari JavaScript -->
-                                </tbody>
-                            </table>
+                    <!-- Daftar Berita Terpublikasi -->
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-amber-100">
+                        <h4 class="font-bold text-amber-900 mb-4 text-base">Kelola Catatan Terbit</h4>
+                        <div id="dashboard-articles-list" class="space-y-3">
+                            <p class="text-sm text-slate-500">Memuat data artikel...</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- TAB 4: ARSIR TERPISAH -->
-            <div id="view-archive" class="hidden space-y-6 view-section">
-                <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-200 dark:border-gray-700 space-y-4">
-                    <div class="border-b pb-3 dark:border-gray-700">
-                        <h2 class="text-xl font-bold flex items-center gap-2 text-primary">
-                            <i class="fa-solid fa-box-archive"></i> <span data-lang-key="archive_page_title">Arsip Berita Desa Terpadu</span>
-                        </h2>
-                        <p class="text-xs text-gray-500 mt-1" data-lang-key="archive_page_desc">Seluruh riwayat publikasi berita desa dari berbagai wilayah Jateng dan DIY tersimpan rapi di sini.</p>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-sm text-left">
-                             <thead class="bg-gray-50 dark:bg-gray-700 text-gray-600 dark:text-gray-300 border-b border-gray-200 dark:border-gray-700">
-                                <tr>
-                                    <th class="px-4 py-3 font-semibold">Berita</th>
-                                    <th class="px-4 py-3 font-semibold w-32">Kategori</th>
-                                    <th class="px-4 py-3 font-semibold w-32 text-right">Tanggal Publikasi</th>
-                                </tr>
-                            </thead>
-                            <tbody id="archiveNewsList" class="divide-y divide-gray-100 dark:divide-gray-700">
-                                <!-- Dinamis -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+        </div>
 
-        </main>
+        <!-- Sidebar Kanan (1 Kolom) -->
+        <div class="space-y-6">
 
-        <!-- SIDEBAR SAMPING -->
-        <aside class="space-y-6">
-            
-            <!-- WIDGET KUTIPAN HIKMAH HARIAN -->
-            <div class="bg-white dark:bg-gray-800 p-5 rounded-xl shadow-md border border-gray-200 dark:border-gray-700 space-y-3">
-                <h3 class="font-bold text-sm flex items-center gap-2 text-primary border-b pb-2 dark:border-gray-700">
-                    <i class="fa-solid fa-quote-left"></i> <span>KUTIPAN HIKMAH PILIHAN</span>
+            <!-- Tim Dakwah -->
+            <div class="bg-white rounded-2xl p-5 shadow-sm border border-amber-100">
+                <h3 class="font-bold text-amber-900 mb-3 text-base pb-2 border-b border-amber-100 flex items-center">
+                    <span class="mr-2">👥</span> Tim Dakwah
                 </h3>
-                <div class="text-xs space-y-3 text-gray-600 dark:text-gray-300">
-                    <p class="font-serif italic leading-relaxed text-gray-800 dark:text-gray-200">
-                        “Sesungguhnya yang takut kepada Allah diantara hamba-hambaNya hanyalah ulama” <span class="text-primary font-bold">[Fâthir/35: 28]</span>
-                    </p>
-                    <p class="font-serif italic leading-relaxed text-gray-800 dark:text-gray-200">
-                        “...Apabila kalian hendak tidur, maka ucapkanlah subhânallâh 33 kali, alhamdulillâh 33 kali dan Allahu akbar 34 kali...” <span class="text-primary font-bold">[HR. al-Bukhâri no.3502]</span>
-                    </p>
-                    <button onclick="window.switchTab('hikmah')" class="w-full text-center py-2 bg-primary/10 hover:bg-primary hover:text-white text-primary rounded-lg transition font-medium text-xs">
-                        Lihat Selengkapnya & Dzikir Harian
-                    </button>
-                </div>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                    Dikelola langsung oleh Tim Dakwah <strong>Noto Ati Resiki Ati</strong> untuk menyebarkan kebaikan, ilmu, dan pencerahan rohani.
+                </p>
             </div>
 
-            <!-- WIDGET IKLAN VIDEO PENDEK -->
-            <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-md border border-gray-200 dark:border-gray-700 space-y-3">
-                <div class="flex justify-between items-center border-b pb-2 dark:border-gray-700">
-                    <h3 class="font-bold text-sm flex items-center gap-2 text-primary">
-                        <i class="fa-solid fa-clapperboard"></i> <span data-lang-key="ads_title">IKLAN VIDEO PENDEK</span>
-                    </h3>
-                    <span class="bg-red-100 text-red-600 text-[10px] font-bold px-2 py-0.5 rounded">SPONSORED</span>
-                </div>
-                <!-- Embed YouTube Shorts -->
-                <div class="relative rounded-lg overflow-hidden shadow aspect-[9/16] bg-black">
-                    <iframe 
-                        class="w-full h-full" 
-                        src="https://www.youtube.com/embed/lZDQwTMYwtM" 
-                        title="Iklan Mediadesaonline" 
-                        frameborder="0" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                        referrerpolicy="strict-origin-when-cross-origin" 
-                        allowfullscreen>
-                    </iframe>
-                </div>
-                <p class="text-[11px] text-gray-500 text-center">Video Promosi Resmi mediadesaonline JATENG-DIY</p>
-            </div>
-
-            <!-- WIDGET LOKASI & KONTAK -->
-            <div class="bg-white dark:bg-gray-800 p-5 rounded-xl shadow-md border border-gray-200 dark:border-gray-700 space-y-3">
-                <h3 class="font-bold text-base border-b pb-2 dark:border-gray-700 flex items-center gap-2">
-                    <i class="fa-solid fa-map-location-dot text-primary"></i> <span data-lang-key="contact_title">Lokasi & Kontak Resmi</span>
+            <!-- Kategori Wilayah / Spiritual -->
+            <div class="bg-white rounded-2xl p-5 shadow-sm border border-amber-100">
+                <h3 class="font-bold text-amber-900 mb-3 text-base pb-2 border-b border-amber-100 flex items-center">
+                    <span class="mr-2">📂</span> Kategori Wilayah & Hati
                 </h3>
-                <div class="space-y-3 text-sm text-gray-600 dark:text-gray-300">
-                    <div class="flex items-start gap-2.5">
-                        <i class="fa-solid fa-location-dot text-primary mt-1"></i>
-                        <p><strong class="block text-gray-800 dark:text-white" data-lang-key="office_label">Kantor Sekretariat:</strong> Jl. Kaliurang KM 10, Kabupaten Sleman, D.I. Yogyakarta</p>
-                    </div>
-                    <div class="flex items-center gap-2.5">
-                        <i class="fa-brands fa-whatsapp text-green-500 text-lg"></i>
-                        <div>
-                            <span class="block text-xs text-gray-400" data-lang-key="wa_label">Layanan WhatsApp Center:</span>
-                            <a href="https://wa.me/628551236277" target="_blank" class="font-bold text-primary hover:underline">08551236277</a>
-                        </div>
-                    </div>
-                </div>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#" class="block text-slate-700 hover:text-amber-700 transition">Noto Ati</a></li>
+                    <li><a href="#" class="block text-slate-700 hover:text-amber-700 transition">Resiki Ati</a></li>
+                    <li><a href="#" class="block text-slate-700 hover:text-amber-700 transition">Aqidah & Iman</a></li>
+                    <li><a href="#" class="block text-slate-700 hover:text-amber-700 transition">Al-Qur'an & Tadabbur</a></li>
+                    <li><a href="#" class="block text-slate-700 hover:text-amber-700 transition">Ibadah</a></li>
+                    <li><a href="#" class="block text-slate-700 hover:text-amber-700 transition">Akhlak</a></li>
+                    <li><a href="#" class="block text-slate-700 hover:text-amber-700 transition">Keluarga</a></li>
+                    <li><a href="#" class="block text-slate-700 hover:text-amber-700 transition">Kehidupan & Rezeki</a></li>
+                    <li><a href="#" class="block text-slate-700 hover:text-amber-700 transition">Dakwah Sosial</a></li>
+                    <li><a href="#" class="block text-slate-700 hover:text-amber-700 transition">Akhirat & Kematian</a></li>
+                </ul>
             </div>
 
-            <!-- WIDGET MEDIA SOSIAL -->
-            <div class="bg-white dark:bg-gray-800 p-5 rounded-xl shadow-md border border-gray-200 dark:border-gray-700 space-y-3">
-                <h3 class="font-bold text-base border-b pb-2 dark:border-gray-700 flex items-center gap-2">
-                    <i class="fa-solid fa-share-nodes text-primary"></i> <span data-lang-key="social_title">Media Sosial Resmi</span>
+            <!-- Media Sosial -->
+            <div class="bg-white rounded-2xl p-5 shadow-sm border border-amber-100">
+                <h3 class="font-bold text-amber-900 mb-3 text-base pb-2 border-b border-amber-100 flex items-center">
+                    <span class="mr-2">📱</span> Media Sosial Resmi
                 </h3>
-                <div class="flex flex-col gap-2.5">
-                    <a href="https://www.youtube.com/@NOTOATIRESIKIATI" target="_blank" class="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition text-sm">
-                        <i class="fa-brands fa-youtube text-red-600 text-lg w-6"></i> <span>@NOTOATIRESIKIATI</span>
+                <div class="space-y-2.5 text-sm">
+                    <a href="https://youtube.com/@NOTOATIRESIKIATI" target="_blank" class="flex items-center p-2 rounded-xl bg-red-50 text-red-700 hover:bg-red-100 transition">
+                        <span class="font-bold mr-2">▶</span> YouTube: @NOTOATIRESIKIATI
                     </a>
-                    <a href="https://www.facebook.com/NOTOATIRESIKIATI" target="_blank" class="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition text-sm">
-                        <i class="fa-brands fa-facebook text-blue-600 text-lg w-6"></i> <span>@NOTOATIRESIKIATI</span>
+                    <a href="https://instagram.com/NOTOATIRESIKIATI" target="_blank" class="flex items-center p-2 rounded-xl bg-pink-50 text-pink-700 hover:bg-pink-100 transition">
+                        <span class="font-bold mr-2">📸</span> Instagram: @NOTOATIRESIKIATI
                     </a>
-                    <a href="https://www.instagram.com/NOTOATIRESIKIATI/" target="_blank" class="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition text-sm">
-                        <i class="fa-brands fa-instagram text-pink-600 text-lg w-6"></i> <span>@NOTOATIRESIKIATI</span>
+                    <a href="https://facebook.com/NOTOATIRESIKIATI" target="_blank" class="flex items-center p-2 rounded-xl bg-blue-50 text-blue-700 hover:bg-blue-100 transition">
+                        <span class="font-bold mr-2">👥</span> Facebook: @NOTOATIRESIKIATI
                     </a>
                 </div>
             </div>
 
-            <!-- WIDGET KATEGORI DAKWAH & KEHIDUPAN -->
-            <div class="bg-white dark:bg-gray-800 p-5 rounded-xl shadow-md border border-gray-200 dark:border-gray-700 space-y-3">
-                <h3 class="font-bold text-base border-b pb-2 dark:border-gray-700 flex items-center gap-2 text-primary">
-                    <i class="fa-solid fa-heart"></i> <span>Kategori Dakwah & Hati</span>
-                </h3>
-                <div class="flex flex-col gap-1.5 max-h-80 overflow-y-auto pr-1 pb-2" id="regionFiltersContainer">
-                    <button onclick="window.filterByRegion('Noto Ati')" class="text-xs text-left bg-gray-100 dark:bg-gray-700 hover:bg-primary hover:text-white px-3 py-2 rounded-md transition font-medium border border-transparent focus:outline-none flex items-center gap-2"><i class="fa-solid fa-heart text-red-500"></i> Noto Ati ❤️</button>
-                    <button onclick="window.filterByRegion('Resiki Ati')" class="text-xs text-left bg-gray-100 dark:bg-gray-700 hover:bg-primary hover:text-white px-3 py-2 rounded-md transition font-medium border border-transparent focus:outline-none flex items-center gap-2"><i class="fa-solid fa-seedling text-green-500"></i> Resiki Ati 🌱</button>
-                    <button onclick="window.filterByRegion('Aqidah & Iman')" class="text-xs text-left bg-gray-100 dark:bg-gray-700 hover:bg-primary hover:text-white px-3 py-2 rounded-md transition font-medium border border-transparent focus:outline-none flex items-center gap-2"><i class="fa-solid fa-mosque text-amber-500"></i> Aqidah & Iman 🕌</button>
-                    <button onclick="window.filterByRegion('Al-Qur\\'an & Tadabbur')" class="text-xs text-left bg-gray-100 dark:bg-gray-700 hover:bg-primary hover:text-white px-3 py-2 rounded-md transition font-medium border border-transparent focus:outline-none flex items-center gap-2"><i class="fa-solid fa-book-quran text-blue-500"></i> Al-Qur'an & Tadabbur 📖</button>
-                    <button onclick="window.filterByRegion('Ibadah')" class="text-xs text-left bg-gray-100 dark:bg-gray-700 hover:bg-primary hover:text-white px-3 py-2 rounded-md transition font-medium border border-transparent focus:outline-none flex items-center gap-2"><i class="fa-solid fa-hands-praying text-emerald-500"></i> Ibadah 🤲</button>
-                    <button onclick="window.filterByRegion('Akhlak')" class="text-xs text-left bg-gray-100 dark:bg-gray-700 hover:bg-primary hover:text-white px-3 py-2 rounded-md transition font-medium border border-transparent focus:outline-none flex items-center gap-2"><i class="fa-solid fa-leaf text-teal-500"></i> Akhlak 🌿</button>
-                    <button onclick="window.filterByRegion('Keluarga')" class="text-xs text-left bg-gray-100 dark:bg-gray-700 hover:bg-primary hover:text-white px-3 py-2 rounded-md transition font-medium border border-transparent focus:outline-none flex items-center gap-2"><i class="fa-solid fa-people-roof text-indigo-500"></i> Keluarga 👨‍👩‍👧</button>
-                    <button onclick="window.filterByRegion('Kehidupan & Rezeki')" class="text-xs text-left bg-gray-100 dark:bg-gray-700 hover:bg-primary hover:text-white px-3 py-2 rounded-md transition font-medium border border-transparent focus:outline-none flex items-center gap-2"><i class="fa-solid fa-coins text-yellow-500"></i> Kehidupan & Rezeki 💰</button>
-                    <button onclick="window.filterByRegion('Dakwah Sosial')" class="text-xs text-left bg-gray-100 dark:bg-gray-700 hover:bg-primary hover:text-white px-3 py-2 rounded-md transition font-medium border border-transparent focus:outline-none flex items-center gap-2"><i class="fa-solid fa-handshake-angle text-purple-500"></i> Dakwah Sosial 🤝</button>
-                    <button onclick="window.filterByRegion('Akhirat & Kematian')" class="text-xs text-left bg-gray-100 dark:bg-gray-700 hover:bg-primary hover:text-white px-3 py-2 rounded-md transition font-medium border border-transparent focus:outline-none flex items-center gap-2"><i class="fa-solid fa-moon text-sky-500"></i> Akhirat & Kematian 🌙</button>
-                </div>
-            </div>
-        </aside>
-    </div>
+        </div>
 
-    <!-- FOOTER -->
-    <footer class="bg-gray-900 text-gray-300 py-8 border-t border-gray-800 mt-auto">
-        <div class="container mx-auto px-4 text-center">
-            <p class="font-bold text-white mb-2 text-lg">mediadesaonline JATENG-DIY</p>
-            <p class="text-sm mb-4">Membangun desa, menginspirasi negeri. Selalu ada yang baru dari Jawa Tengah & D.I. Yogyakarta.</p>
-            <p class="text-xs text-gray-500">&copy; 2024 Media Desa Online. Hak Cipta Dilindungi.</p>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-amber-900 text-amber-200 mt-12 py-6 text-center text-xs tracking-wider border-t border-amber-800">
+        <div class="max-w-7xl mx-auto px-4 space-y-2">
+            <p>NOTO ATI RESIKI ATI MENEBAR DAKWAH KEBAIKAN UNTUK DUNIA</p>
+            <p class="text-amber-400">© 2026 Portal Dakwah Hati</p>
         </div>
     </footer>
 
-    <!-- MODAL TIM DAKWAH -->
-    <div id="redaksiModal" class="fixed inset-0 z-[100] bg-black/60 hidden flex justify-center items-center backdrop-blur-sm p-4">
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-lg overflow-hidden fade-in relative">
-            <div class="bg-amber-600 text-white p-4 flex justify-between items-center">
-                <h3 class="font-bold text-lg flex items-center gap-2"><i class="fa-solid fa-users-rectangle"></i> Susunan Tim Dakwah</h3>
-                <button onclick="window.closeRedaksiModal()" class="hover:bg-amber-700 rounded-full w-8 h-8 flex items-center justify-center transition"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div class="p-6 space-y-4 text-sm">
-                <div class="border-b dark:border-gray-700 pb-2">
-                    <p class="text-xs text-gray-500 uppercase tracking-wide">Pembina / Pimpinan Dakwah</p>
-                    <p class="font-bold text-lg dark:text-white">Latif Safruddin</p>
-                </div>
-                <div class="border-b dark:border-gray-700 pb-2">
-                    <p class="text-xs text-gray-500 uppercase tracking-wide">Anggota Tim Dakwah & Syiar</p>
-                    <ul class="list-disc list-inside font-medium dark:text-gray-200 mt-1">
-                        <li>Ustadz Budi Santoso (Syiar Jateng Utara)</li>
-                        <li>Ustadzah Siti Aminah (Syiar DIY)</li>
-                        <li>Ustadz Ahmad Fauzi (Dakwah & Media Digital)</li>
-                    </ul>
-                </div>
-                <div>
-                    <p class="text-xs text-gray-500 uppercase tracking-wide mb-1">Sekretariat Tim Dakwah & Redaksi</p>
-                    <p class="dark:text-gray-300">Jl. Kaliurang KM 10, Sinduharjo, Ngaglik, Kab. Sleman, D.I. Yogyakarta 55581</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL DETAIL BERITA -->
-    <div id="newsDetailModal" class="fixed inset-0 z-[100] bg-black/70 hidden flex justify-center items-start p-4 md:p-10 overflow-y-auto">
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-3xl my-auto fade-in relative overflow-hidden">
-            <button onclick="window.closeNewsModal()" class="absolute top-4 right-4 bg-black/50 hover:bg-black/70 text-white rounded-full w-10 h-10 flex items-center justify-center transition z-10 backdrop-blur-md">
-                <i class="fa-solid fa-xmark text-xl"></i>
-            </button>
-            
-            <div class="w-full h-64 md:h-80 bg-gray-200 dark:bg-gray-700 relative">
-                <img id="detailImg" src="" alt="Cover" class="w-full h-full object-cover">
-                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 pt-12">
-                    <span id="detailCategory" class="bg-primary text-white text-xs font-bold px-2 py-1 rounded mb-2 inline-block shadow"></span>
-                    <h2 id="detailTitle" class="text-2xl md:text-3xl font-black text-white leading-tight"></h2>
-                </div>
-            </div>
-            
-            <div class="p-6 md:p-8 space-y-6">
-                <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700 pb-4">
-                    <div class="flex items-center gap-2">
-                        <i class="fa-solid fa-clock"></i> <span id="detailDate"></span>
-                    </div>
-                    <div class="flex gap-2">
-                        <button class="hover:text-primary transition" title="Bagikan"><i class="fa-solid fa-share-nodes"></i></button>
-                    </div>
-                </div>
-                <div id="detailContent" class="text-gray-800 dark:text-gray-200 leading-relaxed space-y-4 text-sm md:text-base whitespace-pre-line">
-                    <!-- Content -->
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- TOAST CONTAINER -->
-    <div id="toastContainer" class="fixed bottom-4 right-4 z-[200] flex flex-col gap-2 pointer-events-none"></div>
-
-    <!-- FIREBASE & JAVASCRIPT LOGIC -->
+    <!-- Firebase SDK & Skrip Utama -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
+        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // Global state
-        let db;
-        let auth;
-        let newsCollection;
-        let unsubscribeSnapshot = null;
-        let newsData = [];
-        let currentFilter = '';
-        let currentLang = 'id';
-        let currentUser = null;
-
-        // Simple Translations
-        const translations = {
-            id: { sub_brand: "SELALU ADA YANG BARU", ticker_title: "MUTIARA HIKMAH & INFO", nav_home: "Beranda Berita", nav_editor: "Dakwahku", nav_archive: "Arsip Terpisah", hero_badge: "PORTAL RESMI JATENG & DIY", hero_desc: "Pusat informasi pembangunan, administrasi, wisata budaya, serta keunggulan UMKM desa.", latest_news_title: "Berita Desa Terkini", form_new_title: "Entri Berita Baru", manage_title: "Kelola Entri Berita", archive_page_title: "Arsip Berita Desa Terpadu", ads_title: "IKLAN VIDEO PENDEK", contact_title: "Lokasi & Kontak Resmi", office_label: "Kantor Sekretariat:", social_title: "Media Sosial Resmi", btn_save_draft: "Simpan Draf", btn_publish: "Publikasikan", lbl_title: "Judul Berita", lbl_category: "Kategori / Wilayah", lbl_image: "URL Gambar Utama", lbl_content: "Isi Berita Lengkap" },
-            en: { sub_brand: "ALWAYS SOMETHING NEW", ticker_title: "WISDOM & LATEST INFO", nav_home: "News Home", nav_editor: "Dakwahku", nav_archive: "Separate Archive", hero_badge: "OFFICIAL PORTAL JATENG & DIY", hero_desc: "Information center for development, administration, cultural tourism, and village SMEs.", latest_news_title: "Latest Village News", form_new_title: "New News Entry", manage_title: "Manage News Entries", archive_page_title: "Integrated Village News Archive", ads_title: "SHORT VIDEO ADS", contact_title: "Location & Official Contact", office_label: "Secretariat Office:", social_title: "Official Social Media", btn_save_draft: "Save Draft", btn_publish: "Publish", lbl_title: "News Title", lbl_category: "Category / Region", lbl_image: "Main Image URL", lbl_content: "Full News Content" },
-            jv: { sub_brand: "TANSAYA ANA SING ANYAR", ticker_title: "MUTIARA HIKMAH & INFO", nav_home: "Beranda Warta", nav_editor: "Dakwahku", nav_archive: "Arsip Pisah", hero_badge: "PORTAL RESMI JATENG & DIY", hero_desc: "Pusat informasi pembangunan, administrasi, wisata budaya, lan keunggulan UMKM desa.", latest_news_title: "Warta Desa Anyar", form_new_title: "Entri Warta Anyar", manage_title: "Kelola Entri Warta", archive_page_title: "Arsip Warta Desa Terpadu", ads_title: "IKLAN VIDEO CENDAK", contact_title: "Lokasi & Kontak Resmi", office_label: "Kantor Sekretariat:", social_title: "Media Sosial Resmi", btn_save_draft: "Simpen Draf", btn_publish: "Terbitake", lbl_title: "Irah-irahan Warta", lbl_category: "Kategori / Wilayah", lbl_image: "URL Gambar Utama", lbl_content: "Isi Warta Lengkap" }
+        const firebaseConfig = {
+            apiKey: "AIzaSyDmgXZnwIPT_zLFknK9RykQcYHpTZciWek",
+            authDomain: "notoati.firebaseapp.com",
+            projectId: "notoati",
+            storageBucket: "notoati.firebasestorage.app",
+            messagingSenderId: "791465651130",
+            appId: "1:791465651130:web:6246d07cec2bbc3a8a0b83",
+            measurementId: "G-5W8DPJNTRP"
         };
 
-        // Password protection for Dakwahku
-        let isDakwahUnlocked = false;
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getFirestore(app);
 
-        window.verifyDakwahPassword = function(e) {
-            e.preventDefault();
-            const pass = document.getElementById('dakwahPasswordInput').value;
-            if (pass === 'notoati123') {
-                isDakwahUnlocked = true;
-                document.getElementById('dakwahkuLoginGate').classList.add('hidden');
-                document.getElementById('dakwahkuContent').classList.remove('hidden');
-                window.showToast("Akses Dakwahku berhasil dibuka!");
-            } else {
-                window.showToast("Kata sandi salah! Gunakan 'notoati123'", "error");
-                document.getElementById('dakwahPasswordInput').value = '';
-            }
-        };
-
-        window.lockDakwahku = function() {
-            isDakwahUnlocked = false;
-            document.getElementById('dakwahPasswordInput').value = '';
-            document.getElementById('dakwahkuContent').classList.add('hidden');
-            document.getElementById('dakwahkuLoginGate').classList.remove('hidden');
-            window.showToast("Menu Dakwahku dikunci kembali.");
-        };
-
-        // UI Initialization
+        // Tab Switching Logic
         window.switchTab = function(tabName) {
-            document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
-            document.querySelectorAll('.tab-button').forEach(el => {
-                el.classList.remove('bg-primary', 'text-white');
-                el.classList.add('bg-gray-800', 'text-gray-200');
-            });
-            
-            document.getElementById(`view-${tabName}`).classList.remove('hidden');
-            const activeBtn = document.getElementById(`tabBtn-${tabName}`);
-            if(activeBtn) {
-                activeBtn.classList.remove('bg-gray-800', 'text-gray-200');
-                activeBtn.classList.add('bg-primary', 'text-white');
+            document.getElementById('tab-beranda').classList.add('hidden');
+            document.getElementById('tab-dakwahku').classList.add('hidden');
+
+            if (tabName === 'beranda') {
+                document.getElementById('tab-beranda').classList.remove('hidden');
+                loadPublicArticles();
+            } else if (tabName === 'dakwahku') {
+                document.getElementById('tab-dakwahku').classList.remove('hidden');
             }
-            window.scrollTo({ top: 0, behavior: 'smooth' });
         };
 
-        window.toggleDarkMode = function() {
-            document.documentElement.classList.toggle('dark');
-            const icon = document.getElementById('themeIcon');
-            if (document.documentElement.classList.contains('dark')) {
-                icon.classList.replace('fa-moon', 'fa-sun');
+        // Password Authentication for Dakwahku
+        window.handleLogin = function(e) {
+            e.preventDefault();
+            const pass = document.getElementById('dakwah-password').value;
+            if (pass === 'notoati123') {
+                document.getElementById('dakwahku-login').classList.add('hidden');
+                document.getElementById('dakwahku-dashboard').classList.remove('hidden');
+                loadDashboardArticles();
             } else {
-                icon.classList.replace('fa-sun', 'fa-moon');
+                alert('Kata sandi salah! Gunakan: notoati123');
             }
         };
 
-        window.changeLanguage = function(lang) {
-            currentLang = lang;
-            const dict = translations[lang];
-            document.querySelectorAll('[data-lang-key]').forEach(el => {
-                const key = el.getAttribute('data-lang-key');
-                if (dict[key]) el.innerText = dict[key];
-            });
+        window.handleLock = function() {
+            document.getElementById('dakwah-password').value = '';
+            document.getElementById('dakwahku-dashboard').classList.add('hidden');
+            document.getElementById('dakwahku-login').classList.remove('hidden');
         };
 
-        window.showToast = function(msg, type = 'success') {
-            const container = document.getElementById('toastContainer');
-            const toast = document.createElement('div');
-            const bgColor = type === 'success' ? 'bg-green-600' : (type === 'error' ? 'bg-red-600' : 'bg-gray-800');
-            toast.className = `${bgColor} text-white px-4 py-2 rounded shadow-lg text-sm flex items-center gap-2 fade-in`;
-            toast.innerHTML = `<i class="fa-solid ${type === 'success' ? 'fa-check-circle' : 'fa-info-circle'}"></i> <span>${msg}</span>`;
-            container.appendChild(toast);
-            setTimeout(() => { toast.remove(); }, 3000);
-        };
+        // Publish Article to Firebase
+        window.publishArticle = async function(e) {
+            e.preventDefault();
+            const title = document.getElementById('post-title').value;
+            const category = document.getElementById('post-category').value;
+            const content = document.getElementById('post-content').value;
+            const btn = document.getElementById('submit-btn');
 
-        window.openRedaksiModal = () => document.getElementById('redaksiModal').classList.remove('hidden');
-        window.closeRedaksiModal = () => document.getElementById('redaksiModal').classList.add('hidden');
-        window.closeNewsModal = () => document.getElementById('newsDetailModal').classList.add('hidden');
+            btn.disabled = true;
+            btn.innerText = 'Menyimpan ke Cloud...';
 
-        // Search & Filter Logic
-        document.getElementById('searchNewsInput').addEventListener('input', (e) => {
-            currentFilter = e.target.value.toLowerCase();
-            updateUI();
-        });
-
-        window.filterByRegion = function(region) {
-            currentFilter = region.toLowerCase();
-            document.getElementById('searchNewsInput').value = region;
-            
-            const badge = document.getElementById('activeFilterBadge');
-            badge.innerText = region;
-            badge.classList.remove('hidden');
-            
-            document.querySelectorAll('#regionFiltersContainer button').forEach(btn => {
-                if(btn.innerText.toLowerCase() === region.toLowerCase()) {
-                    btn.classList.add('border-primary', 'text-primary');
-                } else {
-                    btn.classList.remove('border-primary', 'text-primary');
-                }
-            });
-            
-            updateUI();
-            window.switchTab('home');
-        };
-
-        window.clearFilters = function() {
-            currentFilter = '';
-            document.getElementById('searchNewsInput').value = '';
-            document.getElementById('activeFilterBadge').classList.add('hidden');
-            document.querySelectorAll('#regionFiltersContainer button').forEach(btn => {
-                btn.classList.remove('border-primary', 'text-primary');
-            });
-            updateUI();
-        };
-
-        window.openArticle = function(id) {
-            const article = newsData.find(n => n.id === id);
-            if(!article) return;
-            
-            document.getElementById('detailImg').src = article.image || 'https://placehold.co/800x400/16a34a/ffffff?text=Image+Not+Found';
-            document.getElementById('detailCategory').innerText = article.category;
-            document.getElementById('detailTitle').innerText = article.title;
-            
-            let dateStr = "Baru saja";
-            if(article.createdAt && article.createdAt.toDate) {
-                dateStr = article.createdAt.toDate().toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });
-            }
-            document.getElementById('detailDate').innerText = dateStr;
-            document.getElementById('detailContent').innerText = article.content;
-            
-            document.getElementById('newsDetailModal').classList.remove('hidden');
-        };
-
-        // Setup Firebase
-        async function initFirebase() {
             try {
-                const appId = typeof __app_id !== 'undefined' ? __app_id : 'mediadesaonline-app';
-                const firebaseConfigStr = typeof __firebase_config !== 'undefined' ? __firebase_config : null;
-                
-                if (!firebaseConfigStr) {
-                    throw new Error("Firebase configuration missing");
-                }
-
-                const firebaseConfig = JSON.parse(firebaseConfigStr);
-                const app = initializeApp(firebaseConfig);
-                db = getFirestore(app);
-                auth = getAuth(app);
-                
-                newsCollection = collection(db, 'artifacts', appId, 'public', 'data', 'news');
-
-                const initialToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-                if (initialToken) {
-                    await signInWithCustomToken(auth, initialToken);
-                } else {
-                    await signInAnonymously(auth);
-                }
-
-                onAuthStateChanged(auth, (user) => {
-                    if (user) {
-                        currentUser = user;
-                        loadNewsRealtime();
-                    }
+                await addDoc(collection(db, "berita_dakwah"), {
+                    title: title,
+                    category: category,
+                    content: content,
+                    createdAt: serverTimestamp()
                 });
 
+                alert('Catatan dakwah berhasil dipublikasikan secara permanen!');
+                document.getElementById('post-title').value = '';
+                document.getElementById('post-content').value = '';
+                loadDashboardArticles();
+                loadPublicArticles();
             } catch (error) {
-                console.error("Firebase init error:", error);
-                document.getElementById('loadingOverlay').innerHTML = `
-                    <div class="bg-white p-6 rounded text-center border border-red-200">
-                        <i class="fa-solid fa-triangle-exclamation text-red-500 text-3xl mb-2"></i>
-                        <p class="font-bold">Gagal memuat database</p>
-                        <p class="text-sm text-gray-500">Menampilkan versi offline sementara</p>
-                        <button onclick="document.getElementById('loadingOverlay').classList.add('hidden')" class="mt-4 px-4 py-2 bg-gray-200 rounded">Tutup</button>
-                    </div>`;
-                newsData = [
-                    { id: '1', title: 'Desa Mandiri Energi di Gunungkidul', category: 'Gunungkidul', content: 'Inovasi tenaga surya memajukan desa...', status: 'published', image: 'https://images.unsplash.com/photo-1590253232230-672ceb585324?w=500&auto=format&fit=crop&q=60' },
-                    { id: '2', title: 'UMKM Batik Sleman Go Internasional', category: 'Sleman', content: 'Pameran batik sukses tembus pasar eropa...', status: 'published', image: 'https://images.unsplash.com/photo-1605810756778-2921a97db707?w=500&auto=format&fit=crop&q=60' }
-                ];
-                updateUI();
-                setTimeout(() => document.getElementById('loadingOverlay').classList.add('hidden'), 2000);
+                console.error("Error adding document: ", error);
+                alert('Gagal menyimpan berita. Periksa koneksi atau konfigurasi Firebase Firestore.');
+            } finally {
+                btn.disabled = false;
+                btn.innerText = 'Publikasikan ke Firebase';
             }
-        }
+        };
 
-        // CRUD Operations
-        function loadNewsRealtime() {
-            if (!currentUser) return;
-            
-            unsubscribeSnapshot = onSnapshot(newsCollection, (snapshot) => {
-                newsData = [];
-                snapshot.forEach(doc => {
-                    newsData.push({ id: doc.id, ...doc.data() });
-                });
-                
-                newsData.sort((a, b) => {
-                    const timeA = a.createdAt?.toMillis ? a.createdAt.toMillis() : 0;
-                    const timeB = b.createdAt?.toMillis ? b.createdAt.toMillis() : 0;
-                    return timeB - timeA;
-                });
-
-                document.getElementById('loadingOverlay').classList.add('hidden');
-                updateUI();
-            }, (error) => {
-                console.error("Error listening to news: ", error);
-                window.showToast("Gagal menyinkronkan berita", "error");
-            });
-        }
-
-        window.submitForm = async function(statusMode) {
-            if (!currentUser) return window.showToast("Anda harus login/terhubung.", "error");
-
-            const title = document.getElementById('newsTitle').value.trim();
-            const category = document.getElementById('newsCategory').value.trim();
-            const image = document.getElementById('newsImage').value.trim();
-            const content = document.getElementById('newsContent').value.trim();
-            const editId = document.getElementById('editDocId').value;
-
-            if (!title || !category || !content) {
-                return window.showToast("Harap isi semua kolom wajib (Judul, Kategori, Isi)!", "error");
-            }
-
-            const newsItem = {
-                title,
-                category,
-                image: image || 'https://placehold.co/800x400/16a34a/ffffff?text=Berita+Desa',
-                content,
-                status: statusMode,
-                authorId: currentUser.uid,
-                updatedAt: serverTimestamp()
-            };
+        // Load Public Articles
+        async function loadPublicArticles() {
+            const container = document.getElementById('public-articles-container');
+            const countBadge = document.getElementById('article-count');
+            container.innerHTML = '<div class="col-span-full text-center py-8 text-amber-700/60">Memuat catatan dakwah...</div>';
 
             try {
-                if (editId) {
-                    await updateDoc(doc(newsCollection, editId), newsItem);
-                    window.showToast(`Berita berhasil diperbarui sebagai ${statusMode === 'draft' ? 'Draf' : 'Publikasi'}!`);
-                } else {
-                    newsItem.createdAt = serverTimestamp();
-                    await addDoc(newsCollection, newsItem);
-                    window.showToast(`Berita baru berhasil disimpan sebagai ${statusMode === 'draft' ? 'Draf' : 'Publikasi'}!`);
+                const q = query(collection(db, "berita_dakwah"));
+                const querySnapshot = await getDocs(q);
+                let articles = [];
+                querySnapshot.forEach((docSnap) => {
+                    articles.push({ id: docSnap.id, ...docSnap.data() });
+                });
+
+                countBadge.innerText = `${articles.length} Artikel`;
+
+                if (articles.length === 0) {
+                    container.innerHTML = '<div class="col-span-full text-center py-8 text-slate-500">Belum ada catatan dakwah yang dipublikasikan.</div>';
+                    return;
                 }
-                window.resetNewsForm();
-            } catch (e) {
-                console.error("Save error: ", e);
-                window.showToast("Terjadi kesalahan saat menyimpan data.", "error");
+
+                container.innerHTML = '';
+                articles.forEach(art => {
+                    container.innerHTML += `
+                        <div class="bg-amber-50/40 border border-amber-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition flex flex-col justify-between">
+                            <div>
+                                <span class="text-xs bg-amber-100 text-amber-800 px-2.5 py-1 rounded-full font-semibold">${art.category || 'Umum'}</span>
+                                <h4 class="font-bold text-amber-900 mt-2 text-lg">${escapeHtml(art.title)}</h4>
+                                <p class="text-sm text-slate-600 mt-2 line-clamp-3 leading-relaxed">${escapeHtml(art.content)}</p>
+                            </div>
+                            <div class="mt-4 pt-3 border-t border-amber-100 flex justify-between items-center text-xs text-slate-400">
+                                <span>Tim Dakwah</span>
+                                <button onclick="viewFullArticle('${escapeHtml(art.title).replace(/'/g, "\\'")}', '${escapeHtml(art.content).replace(/'/g, "\\'")}', '${art.category}')" class="text-amber-700 font-semibold hover:underline">Baca Selengkapnya &rarr;</button>
+                            </div>
+                        </div>
+                    `;
+                });
+            } catch (err) {
+                console.error(err);
+                container.innerHTML = '<div class="col-span-full text-center py-8 text-red-500">Gagal memuat artikel dari database.</div>';
             }
-        };
+        }
 
-        window.editNews = function(id) {
-            const article = newsData.find(n => n.id === id);
-            if (!article) return;
+        // Load Dashboard Articles for Management
+        async function loadDashboardArticles() {
+            const listContainer = document.getElementById('dashboard-articles-list');
+            listContainer.innerHTML = '<p class="text-sm text-slate-500">Memuat data...</p>';
 
-            document.getElementById('editDocId').value = article.id;
-            document.getElementById('newsTitle').value = article.title;
-            document.getElementById('newsCategory').value = article.category;
-            document.getElementById('newsImage').value = article.image === 'https://placehold.co/800x400/16a34a/ffffff?text=Berita+Desa' ? '' : article.image;
-            document.getElementById('newsContent').value = article.content;
-            
-            document.getElementById('formHeaderTitle').innerText = "Edit Entri Berita";
-            document.getElementById('cancelEditBtn').classList.remove('hidden');
-            
-            window.switchTab('editor');
-        };
-
-        window.deleteNews = async function(id) {
             try {
-                await deleteDoc(doc(newsCollection, id));
-                window.showToast("Berita berhasil dihapus.");
-            } catch (e) {
-                console.error("Delete error:", e);
-                window.showToast("Gagal menghapus berita.", "error");
+                const querySnapshot = await getDocs(collection(db, "berita_dakwah"));
+                let articles = [];
+                querySnapshot.forEach((docSnap) => {
+                    articles.push({ id: docSnap.id, ...docSnap.data() });
+                });
+
+                if (articles.length === 0) {
+                    listContainer.innerHTML = '<p class="text-sm text-slate-500">Belum ada catatan.</p>';
+                    return;
+                }
+
+                listContainer.innerHTML = '';
+                articles.forEach(art => {
+                    listContainer.innerHTML += `
+                        <div class="flex justify-between items-center p-3 rounded-xl border border-amber-100 bg-amber-50/30">
+                            <div>
+                                <span class="text-xs font-bold text-amber-700">[${art.category}]</span>
+                                <h5 class="font-bold text-sm text-slate-800">${escapeHtml(art.title)}</h5>
+                            </div>
+                            <button onclick="deleteArticle('${art.id}')" class="bg-red-100 hover:bg-red-200 text-red-700 px-3 py-1 rounded-lg text-xs font-semibold transition">Hapus</button>
+                        </div>
+                    `;
+                });
+            } catch (err) {
+                console.error(err);
+                listContainer.innerHTML = '<p class="text-sm text-red-500">Gagal memuat daftar.</p>';
+            }
+        }
+
+        // Delete Article
+        window.deleteArticle = async function(id) {
+            if (confirm('Yakin ingin menghapus catatan dakwah ini secara permanen?')) {
+                try {
+                    await deleteDoc(doc(db, "berita_dakwah", id));
+                    alert('Catatan berhasil dihapus.');
+                    loadDashboardArticles();
+                    loadPublicArticles();
+                } catch (err) {
+                    console.error(err);
+                    alert('Gagal menghapus catatan.');
+                }
             }
         };
 
-        // UI Renderers
-        function updateUI() {
-            renderHomeFeed();
-            renderManageList();
-            renderArchiveList();
-        }
-
-        function renderHomeFeed() {
-            const feedContainer = document.getElementById('newsFeed');
-            feedContainer.innerHTML = '';
-
-            let filtered = newsData.filter(n => n.status === 'published');
-            if (currentFilter) {
-                filtered = filtered.filter(n => 
-                    n.title.toLowerCase().includes(currentFilter) || 
-                    n.category.toLowerCase().includes(currentFilter) ||
-                    n.content.toLowerCase().includes(currentFilter)
-                );
-            }
-
-            if (filtered.length === 0) {
-                feedContainer.innerHTML = `<div class="col-span-1 md:col-span-2 text-center py-10 text-gray-500 bg-white dark:bg-gray-800 rounded-xl shadow border border-gray-200 dark:border-gray-700">Tidak ada berita ditemukan untuk filter/pencarian ini.</div>`;
-                return;
-            }
-
-            filtered.forEach(article => {
-                let dateStr = "";
-                if(article.createdAt && article.createdAt.toDate) {
-                    dateStr = article.createdAt.toDate().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
-                }
-
-                feedContainer.innerHTML += `
-                    <article class="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden border border-gray-200 dark:border-gray-700 hover:shadow-lg transition group cursor-pointer" onclick="window.openArticle('${article.id}')">
-                        <div class="h-48 overflow-hidden relative">
-                            <span class="absolute top-2 left-2 bg-primary text-white text-[10px] font-bold px-2 py-1 rounded z-10 uppercase shadow">${article.category}</span>
-                            <img src="${article.image}" alt="${article.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='https://placehold.co/800x400/16a34a/ffffff?text=MDO'">
-                        </div>
-                        <div class="p-4 space-y-2">
-                            <h3 class="font-bold text-lg leading-tight group-hover:text-primary transition line-clamp-2">${article.title}</h3>
-                            <p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-3">${article.content}</p>
-                            <div class="pt-2 flex justify-between items-center text-xs text-gray-500 dark:text-gray-500">
-                                <span><i class="fa-solid fa-calendar-days mr-1"></i> ${dateStr}</span>
-                                <span class="text-primary font-medium hover:underline">Baca Selengkapnya</span>
-                            </div>
-                        </div>
-                    </article>
-                `;
-            });
-        }
-
-        function renderManageList() {
-            const listContainer = document.getElementById('manageNewsList');
-            listContainer.innerHTML = '';
-
-            if (newsData.length === 0) {
-                listContainer.innerHTML = `<tr><td colspan="4" class="text-center py-6 text-gray-500">Belum ada entri berita.</td></tr>`;
-                return;
-            }
-
-            newsData.forEach((article) => {
-                let dateStr = "-";
-                if(article.createdAt && article.createdAt.toDate) {
-                    dateStr = article.createdAt.toDate().toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', year: 'numeric' });
-                }
-
-                const statusBadge = article.status === 'published' 
-                    ? `<span class="bg-green-100 text-green-700 text-xs px-2 py-1 rounded font-medium"><i class="fa-solid fa-check"></i> Terbit</span>` 
-                    : `<span class="bg-amber-100 text-amber-700 text-xs px-2 py-1 rounded font-medium"><i class="fa-solid fa-pen"></i> Draf</span>`;
-
-                listContainer.innerHTML += `
-                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition">
-                        <td class="px-4 py-3">
-                            <div class="font-medium text-gray-900 dark:text-white line-clamp-1">${article.title}</div>
-                            <div class="text-xs text-gray-500"><i class="fa-solid fa-tag text-primary mr-1"></i>${article.category}</div>
-                        </td>
-                        <td class="px-4 py-3 text-center">${statusBadge}</td>
-                        <td class="px-4 py-3 text-center text-xs text-gray-500">${dateStr}</td>
-                        <td class="px-4 py-3 text-center">
-                            <div class="flex items-center justify-center gap-2">
-                                <button onclick="window.editNews('${article.id}')" class="text-blue-600 hover:bg-blue-50 dark:hover:bg-gray-600 p-1.5 rounded transition" title="Edit"><i class="fa-solid fa-edit"></i></button>
-                                <button onclick="window.deleteNews('${article.id}')" class="text-red-600 hover:bg-red-50 dark:hover:bg-gray-600 p-1.5 rounded transition" title="Hapus"><i class="fa-solid fa-trash"></i></button>
-                            </div>
-                        </td>
-                    </tr>
-                `;
-            });
-        }
-
-        function renderArchiveList() {
-            const archiveContainer = document.getElementById('archiveNewsList');
-            archiveContainer.innerHTML = '';
-            
-            const published = newsData.filter(n => n.status === 'published');
-
-            if (published.length === 0) {
-                archiveContainer.innerHTML = `<tr><td colspan="3" class="text-center py-6 text-gray-500">Arsip kosong.</td></tr>`;
-                return;
-            }
-
-            published.forEach(article => {
-                let dateStr = "";
-                if(article.createdAt && article.createdAt.toDate) {
-                    dateStr = article.createdAt.toDate().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
-                }
-
-                archiveContainer.innerHTML += `
-                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition cursor-pointer" onclick="window.openArticle('${article.id}')">
-                        <td class="px-4 py-3">
-                            <div class="font-medium text-gray-900 dark:text-white">${article.title}</div>
-                            <div class="text-xs text-gray-500 line-clamp-1 mt-1">${article.content.substring(0, 80)}...</div>
-                        </td>
-                        <td class="px-4 py-3 text-xs"><span class="bg-gray-100 dark:bg-gray-600 px-2 py-1 rounded text-gray-600 dark:text-gray-300">${article.category}</span></td>
-                        <td class="px-4 py-3 text-right text-xs text-gray-500 whitespace-nowrap">${dateStr}</td>
-                    </tr>
-                `;
-            });
-        }
-
-        window.resetNewsForm = function() {
-            document.getElementById('newsForm').reset();
-            document.getElementById('editDocId').value = '';
-            document.getElementById('formHeaderTitle').innerText = "Entri Berita Baru";
-            document.getElementById('cancelEditBtn').classList.add('hidden');
+        // Modal / View Full Article Handler
+        window.viewFullArticle = function(title, content, category) {
+            alert(`Kategori: [${category}]\n\n${title}\n\n${content}`);
         };
 
-        // Bootstrap App
-        window.addEventListener('DOMContentLoaded', () => {
-            initFirebase();
-            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                window.toggleDarkMode();
-            }
-        });
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+
+        // Initial Load on startup
+        loadPublicArticles();
     </script>
 </body>
 </html>
